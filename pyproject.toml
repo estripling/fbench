@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "fbench"
+version = "0.0.0"
+description = "A collection of benchmark functions."
+authors = ["fBench Developers"]
+license = "BSD 3-Clause"
+readme = "README.md"
+repository = "https://github.com/estripling/fbench"
+documentation = "https://fbench.readthedocs.io/en/stable/"
+keywords = ["fbench"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+
+[tool.semantic_release]
+version_variable = "pyproject.toml:version"
+branch = "main"
+changelog_file = "CHANGELOG.md"
+build_command = "poetry build"
+dist_path = "dist/"
+upload_to_release = true
+upload_to_pypi = false
+remove_dist = false
+patch_without_tag = true
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
