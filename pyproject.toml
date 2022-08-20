@@ -7,6 +7,7 @@ license = "BSD 3-Clause"
 readme = "README.md"
 repository = "https://github.com/estripling/fbench"
 documentation = "https://fbench.readthedocs.io/en/stable/"
+include = ["LICENSES/"]
 keywords = ["fbench"]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -17,6 +18,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
+numpy = "^1.23.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
