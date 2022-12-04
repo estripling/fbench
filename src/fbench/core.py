@@ -1,5 +1,10 @@
 import numpy as np
 
+__all__ = (
+    "ackley",
+    "sphere",
+)
+
 
 def ackley(x):
     """Ackley function.
