@@ -1,6 +1,6 @@
 import pytest
 
-from fbench import core
+import fbench as fb
 
 
 @pytest.mark.parametrize(
@@ -13,7 +13,7 @@ from fbench import core
     ],
 )
 def test_ackley(arg, expected):
-    actual = core.ackley(x=arg)
+    actual = fb.ackley(x=arg)
     assert round(actual, 4) == expected
 
 
@@ -27,5 +27,5 @@ def test_ackley(arg, expected):
     ],
 )
 def test_sphere(arg, expected):
-    actual = core.sphere(x=arg)
+    actual = fb.sphere(x=arg)
     assert actual == expected
