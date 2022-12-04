@@ -3,6 +3,7 @@ import numpy as np
 __all__ = (
     "ackley",
     "rastrigin",
+    "rosenbrock",
     "sphere",
 )
 
@@ -88,6 +89,49 @@ def rastrigin(x):
     """
     x = np.asarray(x)
     return float(10 * len(x) + (x**2 - 10 * np.cos(2 * np.pi * x)).sum())
+
+
+def rosenbrock(x):
+    """Rosenbrock function.
+
+    .. math::
+
+        f(\\mathbf{x}) =
+        \\sum_{i=1}^{n-1} \\left(
+            100 (x_{i+1} - x_i^2)^2 + (1 - x_i)^2
+        \\right)
+
+    Parameters
+    ----------
+    x : array_like
+        A real-valued vector to evaluate.
+
+    Returns
+    -------
+    float
+        Function value at x.
+
+    References
+    ----------
+    .. [1] "Test functions for optimization", Wikipedia,
+           `<https://en.wikipedia.org/wiki/Test_functions_for_optimization>`_
+
+    Examples
+    --------
+    >>> round(rosenbrock([0, 0]), 4)
+    1.0
+
+    >>> round(rosenbrock([1, 1]), 4)
+    0.0
+
+    >>> round(rosenbrock([1, 1, 1]), 4)
+    0.0
+
+    >>> round(rosenbrock([3, 3]), 4)
+    3604.0
+    """
+    x = np.asarray(x)
+    return float((100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2).sum())
 
 
 def sphere(x):
