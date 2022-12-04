@@ -20,6 +20,25 @@ def test_ackley(arg, expected):
 @pytest.mark.parametrize(
     "arg, expected",
     [
+        ([0], 0.0),
+        ([0, 0], 0.0),
+        ([1, 1], 2.0),
+        ([1, 2], 5.0),
+        ([2, 1], 5.0),
+        ([2, 2], 8.0),
+        ([4, 4.5], 56.25),
+        ([4.5, 4], 56.25),
+        ([5.12, 5.12], 57.85),
+    ],
+)
+def test_rastrigin(arg, expected):
+    actual = fb.rastrigin(x=arg)
+    assert round(actual, 2) == expected
+
+
+@pytest.mark.parametrize(
+    "arg, expected",
+    [
         ([0], 0),
         ([0, 0], 0),
         ([1, 1], 2),
