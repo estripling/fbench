@@ -39,7 +39,6 @@ def test_rastrigin(arg, expected):
 @pytest.mark.parametrize(
     "arg, expected",
     [
-        ([0], 0.0),
         ([0, 0], 1.0),
         ([1, 1], 0.0),
         ([1, 1, 1], 0.0),
