@@ -1,5 +1,7 @@
 import numpy as np
 
+from fbench.validation import check_vector
+
 __all__ = (
     "ackley",
     "rastrigin",
@@ -44,7 +46,7 @@ def ackley(x):
     >>> round(ackley([1, 1]), 4)
     3.6254
     """
-    x = np.asarray(x)
+    x = check_vector(x, 1)
     return float(
         -20 * np.exp(-0.2 * np.sqrt((x**2).mean()))
         - np.exp((np.cos(2 * np.pi * x)).sum() / len(x))
@@ -87,7 +89,7 @@ def rastrigin(x):
     >>> round(rastrigin([4.5, 4.5]), 4)
     80.5
     """
-    x = np.asarray(x)
+    x = check_vector(x, 1)
     return float(10 * len(x) + (x**2 - 10 * np.cos(2 * np.pi * x)).sum())
 
 
@@ -130,7 +132,7 @@ def rosenbrock(x):
     >>> round(rosenbrock([3, 3]), 4)
     3604.0
     """
-    x = np.asarray(x)
+    x = check_vector(x, 2)
     return float((100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2).sum())
 
 
@@ -164,4 +166,5 @@ def sphere(x):
     >>> sphere([1, 1])
     2.0
     """
-    return float((np.asarray(x) ** 2).sum())
+    x = check_vector(x, 1)
+    return float((x**2).sum())
