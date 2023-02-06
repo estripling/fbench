@@ -3,32 +3,39 @@
 <p align="center">
 <a href="https://pypi.org/project/fbench"><img alt="pypi" src="https://img.shields.io/pypi/v/fbench"></a>
 <a href="https://readthedocs.org/projects/fbench/?badge=latest"><img alt="docs" src="https://readthedocs.org/projects/fbench/badge/?version=latest"></a>
+<a href="https://github.com/estripling/fbench/actions/workflows/ci.yml"><img alt="ci status" src="https://github.com/estripling/fbench/actions/workflows/ci.yml/badge.svg?branch=main"></a>
 <a href="https://codecov.io/gh/estripling/fbench"><img alt="coverage" src="https://codecov.io/github/estripling/fbench/coverage.svg?branch=main"></a>
 <a href="https://github.com/estripling/fbench/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/pypi/l/fbench"></a>
 </p>
 
 ## About
 
-A collection of benchmark functions.
+A collection of benchmark functions:
+
+- [Documentation](https://fbench.readthedocs.io/en/stable/index.html)
+- [Example usage](https://fbench.readthedocs.io/en/stable/example.html)
+- [API Reference](https://fbench.readthedocs.io/en/stable/autoapi/fbench/index.html)
 
 ## Installation
 
-`fbench` is available on [PyPI](https://pypi.org/project/fbench/):
+`fbench` is available on [PyPI](https://pypi.org/project/fbench/) for Python 3.8+:
 
 ```console
 pip install fbench
 ```
 
-## Usage
+## Examples
 
 - TODO
 
-## Contributing
+## Contributing to fBench
 
-Interested in contributing?
-Check out the [contributing guidelines](https://fbench.readthedocs.io/en/latest/contributing.html) and the [guide for developers](https://fbench.readthedocs.io/en/latest/developers.html).
-Please note that this project is released with a [Code of Conduct](https://fbench.readthedocs.io/en/latest/conduct.html).
-By contributing to this project, you agree to abide by its terms.
+Your contribution is greatly appreciated!
+See the following links to help you get started:
+
+- [Contributing Guide](https://fbench.readthedocs.io/en/latest/contributing.html)
+- [Developer Guide](https://fbench.readthedocs.io/en/latest/developers.html)
+- [Contributor Code of Conduct](https://fbench.readthedocs.io/en/latest/conduct.html)
 
 ## License
 

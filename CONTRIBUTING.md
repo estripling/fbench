@@ -40,16 +40,16 @@ If you are proposing a feature:
 ## Get Started!
 
 Ready to contribute to `fbench`?
-Check out the developer guide for local setup.
-Then,
+Check out the [developer guide](https://fbench.readthedocs.io/en/latest/developers.html) to set up the development environment.
+Next,
 
 1. Use `git` (or similar) to create a branch for local development and make your changes:
 
-   ```console
+   ```shell
    git checkout -b feature/name-of-your-enhancement
    ```
    or
-   ```console
+   ```shell
    git checkout -b bugfix/name-of-your-fix
    ```
 
@@ -67,5 +67,5 @@ Before you submit a pull request, check that it meets these guidelines:
 
 ## Code of Conduct
 
-Please note that the `fbench` project is released with a Code of Conduct.
+Please note that the fBench project is released with a [Code of Conduct](https://fbench.readthedocs.io/en/latest/conduct.html).
 By contributing to this project you agree to abide by its terms.
