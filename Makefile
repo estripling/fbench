@@ -1,143 +1,67 @@
-# Global parameters
-SHELL := /bin/bash
-CONDA := conda
-PYTHON := python
+SHELL := /bin/zsh
+PYTHON := python3
 POETRY := poetry
-PGK := fbench
-PGKENV := fbench-py38
-GHUSER := estripling
 
+.PHONY: help \
+	check \
+	check-style \
+	run-tests \
+	clean \
+	create-docs \
+	remove-docs \
+	remove-local-branches \
+	build-package \
+	publish-to-test-pypi \
+	publish-to-pypi
 
-# https://peps.python.org/pep-0008/#maximum-line-length
-MAXLINELENGTH := 79
-
-
-# Main
-.PHONY: all help program
-all: program
-
+## commands
+##  - help                                 :: print this help
 help: Makefile
 	@sed -n 's/^##//p' $<
 
-program:
-	@echo "use 'make help'"
+##  - check                                :: check style, run tests, and clean up cache all at once
+check: clean check-style run-tests clean
 
+##  - check-style                          :: check code style with isort, black, and flake8
+check-style:
+	$(PYTHON) -m isort ./
+	@echo "\n"
+	$(PYTHON) -m black ./
+	@echo "\n"
+	$(PYTHON) -m flake8 ./
+	@echo "\n"
 
-## create_env :: Create env with conda
-.PHONY: create_env
-create_env:
-	$(CONDA) create -n $(PGKENV) python=3.8
+##  - run-tests                            :: run pytest with coverage report
+run-tests:
+	$(PYTHON) -m pytest
+	@echo "\n"
 
+##  - clean                                :: remove Python cache files and directories
+clean:
+	$(PYTHON) scripts/cleanup.py
+	@echo "\n"
 
-## remove_env :: Remove conda env
-.PHONY: remove_env
-remove_env:
-	$(CONDA) env remove -n $(PGKENV)
-
-
-## add_dev_dep :: Add main dev dependencies
-.PHONY: add_dev_dep
-add_dev_dep:
-	$(POETRY) add --dev \
-		pytest \
-		pytest-cov \
-		black \
-		black[jupyter] \
-		isort \
-		flake8 \
-		python-semantic-release
-
-
-## add_dev_docs :: Add dev dependencies for documentation
-.PHONY: add_dev_docs
-add_dev_docs:
-	$(POETRY) add --dev \
-		jupyter \
-		myst-nb \
-		sphinx-autoapi \
-		sphinx-copybutton \
-		furo
-
-
-## add_dev_all :: Add all dev dependencies
-.PHONY: add_dev_all
-add_dev_all: add_dev_dep add_dev_docs
-
-
-## install :: Install requirements in poetry.lock
-.PHONY: install
-install:
-	$(POETRY) install
-
-
-## update_dependencies :: Update project dependencies
-.PHONY: update_dependencies
-update_dependencies:
-	$(POETRY) update
-
-
-## test :: Run tests with coverage report
-.PHONY: test
-test: clean
-	$(PYTHON) -m pytest --doctest-modules src/
-	$(PYTHON) -m pytest --cov=$(PGK) tests/
-
-
-## check_style :: Check code style
-.PHONY: check_style
-check_style: clean
-	$(PYTHON) -m isort --line-length $(MAXLINELENGTH) --profile black ./
-	$(PYTHON) -m black --line-length $(MAXLINELENGTH) ./
-	$(PYTHON) -m flake8 --doctests --max-line-length $(MAXLINELENGTH) ./
-
-
-## create_docs :: Create documentation source files with sphinx
-.PHONY: create_docs
-create_docs:
+##  - create-docs                          :: create local documentation files
+create-docs:
 	cd docs; make html; cd ..;
 
+##  - remove-docs                          :: remove local documentation files
+remove-docs:
+	@rm -rf docs/_build/
 
-## remove_docs_build :: Remove docs/_build/ directory (if there is a significant change)
-.PHONY: remove_docs_build
-remove_docs_build:
-	rm -rf docs/_build/
+##  - remove-local-branches                :: git remove local branches, except main
+remove-local-branches:
+	git -P branch | grep -v "main" | grep -v \* | xargs git branch -D
 
-
-## echo_release_action :: Echo link to manually trigger release action
-.PHONY: echo_release_action
-echo_release_action:
-	@echo https://github.com/$(GHUSER)/$(PGK)/actions/workflows/release.yml
-
-
-## build_pkg :: Build sdist and wheel distributions
-.PHONY: build_pkg
-build_pkg:
+##  - build-package                        :: build sdist and wheel distributions
+build-package:
 	$(POETRY) build
 
-
-## test_publish_pkg :: Publish to TestPyPI
-.PHONY: test_publish_pkg
-test_publish_pkg:
+##  - publish-to-test-pypi                 :: publish to TestPyPI
+publish-to-test-pypi:
 	$(POETRY) config repositories.test-pypi https://test.pypi.org/legacy/
 	$(POETRY) publish -r test-pypi
 
-
-## publish_pkg :: Publish to PyPI
-.PHONY: publish_pkg
-publish_pkg:
+##  - publish-to-pypi                      :: publish to PyPI
+publish-to-pypi:
 	$(POETRY) publish
-
-
-## clean :: Clean up Python cache files and directories
-.PHONY: clean
-clean:
-	$(PYTHON) cleanup.py
-
-
-## info :: Echo variables
-.PHONY: info
-info:
-	@echo SHELL: $(SHELL)
-	@echo PGK: $(PGK)
-	@echo PGKENV: $(PGKENV)
-	@echo GHUSER: $(GHUSER)

@@ -9,48 +9,44 @@ jobs:
     # Only run this job when on "main"
     if: github.ref == 'refs/heads/main'
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.8", "3.9", "3.10"]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
     - name: Check-out repository
       uses: actions/checkout@v3
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.8
 
     - name: Install Poetry
       uses: snok/install-poetry@v1
+      with:
+        version: 1.3.2
 
     - name: Install fbench
       run: poetry install
 
     - name: Run isort
-      run: poetry run isort --check-only --line-length 79 --profile black ./
+      run: poetry run isort --check-only --line-length 88 --profile black ./
 
     - name: Run Black
-      run: poetry run black --check --line-length 79 ./
+      run: poetry run black --check --line-length 88 ./
 
     - name: Run Flake8
-      run: poetry run flake8 --doctests --max-line-length 79 src/ tests/
+      run: poetry run flake8 --doctests --max-line-length 88 src/ tests/
 
     - name: Run pytest
-      run: poetry run pytest tests/ --cov=fbench --cov-report=xml
+      run: poetry run pytest --doctest-modules src/ --cov=src/ --cov-report=xml tests/
 
     - name: Use Codecov to track coverage
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
       with:
         files: ./coverage.xml
 
     - name: Build documentation
       run: poetry run make html --directory docs/
-
 
   cd:
     needs: ci
@@ -58,12 +54,7 @@ jobs:
     # Only run this job when on "main"
     if: github.ref == 'refs/heads/main'
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.8"]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
     - name: Check-out repository
@@ -71,13 +62,15 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.8
 
     - name: Install Poetry
       uses: snok/install-poetry@v1
+      with:
+        version: 1.3.2
 
     - name: Install fbench
       run: poetry install

@@ -7,7 +7,7 @@
 # -- Project information -----------------------------------------------------
 
 project = "fbench"
-copyright = "2022, fBench Developers"
+copyright = "2022-2023, fBench Developers"
 author = "fBench Developers"
 
 # -- General configuration ---------------------------------------------------

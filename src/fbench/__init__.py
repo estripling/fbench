@@ -1,8 +1,11 @@
-from importlib.metadata import version
+from importlib import metadata
 
-__version__ = version("fbench")
+__version__ = metadata.version("fbench")
 
 from .core import *
 from .validation import *
 
-del core, validation
+del (
+    core,
+    validation,
+)
