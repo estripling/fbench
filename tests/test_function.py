@@ -1,6 +1,6 @@
 import pytest
 
-import fbench as fb
+import fbench
 
 
 @pytest.mark.parametrize(
@@ -13,7 +13,7 @@ import fbench as fb
     ],
 )
 def test_ackley(arg, expected):
-    actual = fb.ackley(x=arg)
+    actual = fbench.ackley(x=arg)
     assert round(actual, 4) == expected
 
 
@@ -32,7 +32,7 @@ def test_ackley(arg, expected):
     ],
 )
 def test_rastrigin(arg, expected):
-    actual = fb.rastrigin(x=arg)
+    actual = fbench.rastrigin(x=arg)
     assert round(actual, 2) == expected
 
 
@@ -52,7 +52,7 @@ def test_rastrigin(arg, expected):
     ],
 )
 def test_rosenbrock(arg, expected):
-    actual = fb.rosenbrock(x=arg)
+    actual = fbench.rosenbrock(x=arg)
     assert round(actual, 2) == expected
 
 
@@ -66,5 +66,5 @@ def test_rosenbrock(arg, expected):
     ],
 )
 def test_sphere(arg, expected):
-    actual = fb.sphere(x=arg)
+    actual = fbench.sphere(x=arg)
     assert actual == expected
