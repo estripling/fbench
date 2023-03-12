@@ -26,7 +26,13 @@ pip install fbench
 
 ## Examples
 
-- TODO
+The [`ackley`](https://fbench.readthedocs.io/en/stable/autoapi/fbench/index.html#fbench.ackley) function:
+
+```python
+>>> import fbench
+>>> round(fbench.ackley([1, 1]), 4)
+3.6254
+```
 
 ## Contributing to fBench
 
