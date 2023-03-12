@@ -262,6 +262,22 @@ css = ["tinycss2 (>=1.1.0,<1.2)"]
 dev = ["Sphinx (==4.3.2)", "black (==22.3.0)", "build (==0.8.0)", "flake8 (==4.0.1)", "hashin (==0.17.0)", "mypy (==0.961)", "pip-tools (==6.6.2)", "pytest (==7.1.2)", "tox (==3.25.0)", "twine (==4.0.1)", "wheel (==0.37.1)"]
 
 [[package]]
+name = "bumbag"
+version = "4.1.0"
+description = "A package for Python utility functions."
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "bumbag-4.1.0-py3-none-any.whl", hash = "sha256:74f147eb4942ff7558a8a364952b4a53aeeafca06efb6b4c4945fd76efe2b2b1"},
+    {file = "bumbag-4.1.0.tar.gz", hash = "sha256:447c14dff61c1c4f4e864117b70b2ad4bb83663869061788da36255dcc229686"},
+]
+
+[package.dependencies]
+python-dateutil = ">=2.8.2,<3.0.0"
+toolz = ">=0.12.0,<0.13.0"
+
+[[package]]
 name = "certifi"
 version = "2022.6.15"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -3350,6 +3366,18 @@ files = [
 ]
 
 [[package]]
+name = "toolz"
+version = "0.12.0"
+description = "List processing tools and functional utilities"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "toolz-0.12.0-py3-none-any.whl", hash = "sha256:2059bd4148deb1884bb0eb770a3cde70e7f954cfbbdc2285f1f2de01fd21eb6f"},
+    {file = "toolz-0.12.0.tar.gz", hash = "sha256:88c570861c440ee3f2f6037c4654613228ff40c93a6c25e0eba70d17282c6194"},
+]
+
+[[package]]
 name = "tornado"
 version = "6.2"
 description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
@@ -3615,4 +3643,4 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "a42f63c3a2b9d29fc1c0282e835903f9d6f4147fda53a347f8f970a65dda8563"
+content-hash = "4b989d2245c272ffc60295099e9e052ef5df379ef6198802e4a319153f1fc2fd"
