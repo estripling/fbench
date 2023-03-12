@@ -2,10 +2,10 @@ from importlib import metadata
 
 __version__ = metadata.version("fbench")
 
-from .core import *
+from .function import *
 from .validation import *
 
 del (
-    core,
+    function,
     validation,
 )
