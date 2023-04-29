@@ -6,6 +6,7 @@ from .function import *
 from .validation import *
 
 del (
+    metadata,
     function,
     validation,
 )
