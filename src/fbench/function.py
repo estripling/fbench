@@ -10,7 +10,7 @@ __all__ = (
 )
 
 
-def ackley(x):
+def ackley(x, /):
     """Ackley function.
 
     .. math::
@@ -46,7 +46,7 @@ def ackley(x):
     >>> round(ackley([1, 1]), 4)
     3.6254
     """
-    x = validation.check_vector(x, 1)
+    x = validation.check_vector(x, min_elements=1)
     return float(
         -20 * np.exp(-0.2 * np.sqrt((x**2).mean()))
         - np.exp((np.cos(2 * np.pi * x)).sum() / len(x))
@@ -55,7 +55,7 @@ def ackley(x):
     )
 
 
-def rastrigin(x):
+def rastrigin(x, /):
     """Rastrigin function.
 
     .. math::
@@ -89,11 +89,11 @@ def rastrigin(x):
     >>> round(rastrigin([4.5, 4.5]), 4)
     80.5
     """
-    x = validation.check_vector(x, 1)
+    x = validation.check_vector(x, min_elements=1)
     return float(10 * len(x) + (x**2 - 10 * np.cos(2 * np.pi * x)).sum())
 
 
-def rosenbrock(x):
+def rosenbrock(x, /):
     """Rosenbrock function.
 
     .. math::
@@ -132,11 +132,11 @@ def rosenbrock(x):
     >>> round(rosenbrock([3, 3]), 4)
     3604.0
     """
-    x = validation.check_vector(x, 2)
+    x = validation.check_vector(x, min_elements=2)
     return float((100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2).sum())
 
 
-def sphere(x):
+def sphere(x, /):
     """Sphere function.
 
     .. math::
@@ -166,5 +166,5 @@ def sphere(x):
     >>> sphere([1, 1])
     2.0
     """
-    x = validation.check_vector(x, 1)
+    x = validation.check_vector(x, min_elements=1)
     return float((x**2).sum())

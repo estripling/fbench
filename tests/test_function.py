@@ -4,7 +4,7 @@ import fbench
 
 
 @pytest.mark.parametrize(
-    "arg, expected",
+    "x, expected",
     [
         ([0], 0.0),
         ([0, 0], 0.0),
@@ -12,13 +12,13 @@ import fbench
         ([2, 2], 6.5936),
     ],
 )
-def test_ackley(arg, expected):
-    actual = fbench.ackley(x=arg)
+def test_ackley(x, expected):
+    actual = fbench.ackley(x)
     assert round(actual, 4) == expected
 
 
 @pytest.mark.parametrize(
-    "arg, expected",
+    "x, expected",
     [
         ([0], 0.0),
         ([0, 0], 0.0),
@@ -31,13 +31,13 @@ def test_ackley(arg, expected):
         ([5.12, 5.12], 57.85),
     ],
 )
-def test_rastrigin(arg, expected):
-    actual = fbench.rastrigin(x=arg)
+def test_rastrigin(x, expected):
+    actual = fbench.rastrigin(x)
     assert round(actual, 2) == expected
 
 
 @pytest.mark.parametrize(
-    "arg, expected",
+    "x, expected",
     [
         ([0, 0], 1.0),
         ([1, 1], 0.0),
@@ -51,13 +51,13 @@ def test_rastrigin(arg, expected):
         ([5.12, 5.12], 44514.35),
     ],
 )
-def test_rosenbrock(arg, expected):
-    actual = fbench.rosenbrock(x=arg)
+def test_rosenbrock(x, expected):
+    actual = fbench.rosenbrock(x)
     assert round(actual, 2) == expected
 
 
 @pytest.mark.parametrize(
-    "arg, expected",
+    "x, expected",
     [
         ([0], 0),
         ([0, 0], 0),
@@ -65,6 +65,6 @@ def test_rosenbrock(arg, expected):
         ([2, 2], 8),
     ],
 )
-def test_sphere(arg, expected):
-    actual = fbench.sphere(x=arg)
+def test_sphere(x, expected):
+    actual = fbench.sphere(x)
     assert actual == expected
