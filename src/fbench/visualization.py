@@ -69,6 +69,7 @@ class PlotConfig(Enum):
             antialiased=True,
             linewidth=0.1,
             alpha=0.61803,
+            zorder=0,
         )
 
     @classmethod
@@ -91,7 +92,7 @@ class PlotConfig(Enum):
 
 
 @toolz.curry
-def create_contour_plot(coord, kws_contourf=None, kws_contour=None, ax=None):
+def create_contour_plot(coord, /, *, kws_contourf=None, kws_contour=None, ax=None):
     """Create a contour plot from X, Y, Z coordinate matrices.
 
     Parameters
@@ -178,14 +179,16 @@ def create_coordinates3d(func, x_coord, y_coord=None, /):
            [2., 1., 2.]]))
     """
     x_coord = validation.check_vector(x_coord, min_elements=2)
-    y_coord = validation.check_vector(y_coord, min_elements=2) if y_coord else x_coord
+    y_coord = (
+        x_coord if y_coord is None else validation.check_vector(y_coord, min_elements=2)
+    )
     x, y = np.meshgrid(x_coord, y_coord)
     z = np.apply_along_axis(func1d=func, axis=1, arr=np.c_[x.ravel(), y.ravel()])
     return structure.CoordinateMatrices(x, y, z.reshape(x.shape))
 
 
 @toolz.curry
-def create_surface_plot(coord, kws_surface=None, kws_contourf=None, fig=None):
+def create_surface_plot(coord, /, *, kws_surface=None, kws_contourf=None, ax=None):
     """Create a surface plot from X, Y, Z coordinate matrices.
 
     Parameters
@@ -200,17 +203,14 @@ def create_surface_plot(coord, kws_surface=None, kws_contourf=None, fig=None):
         The kwargs are passed to ``mpl_toolkits.mplot3d.axes3d.Axes3D.contourf``.
         By default, using configuration: ``PlotConfig.get_kws_contourf__YlOrBr_r()``.
         Optionally specify a dict of keyword arguments to update configurations.
-    fig: matplotlib.figure.Figure, default=None
-        Optionally supply a ``Figure`` object.
-        If None, the current ``Figure`` object is retrieved.
+    ax: mpl_toolkits.mplot3d.axes3d.Axes3D, default=None
+        Optionally supply an ``Axes3D`` object.
+        If None, the current ``Axes3D`` object is retrieved.
 
     Returns
     -------
-    fig : matplotlib.figure.Figure
-        The ``Figure`` object.
-
     ax : mpl_toolkits.mplot3d.axes3d.Axes3D
-        The ``Axes3D`` object.
+        The ``Axes3D`` object of the surface.
 
     Notes
     -----
@@ -218,8 +218,7 @@ def create_surface_plot(coord, kws_surface=None, kws_contourf=None, fig=None):
     - Examples are shown in the
       `Overview of fBench functions <https://fbench.readthedocs.io/en/stable/fBench-functions.html)>`_.
     """  # noqa: E501
-    fig = fig or plt.gcf()
-    ax = fig.add_subplot(projection="3d")
+    ax = ax or plt.gcf().add_subplot(projection="3d")
 
     # Make background and axis panes transparent
     ax.patch.set_alpha(0.0)
@@ -237,4 +236,4 @@ def create_surface_plot(coord, kws_surface=None, kws_contourf=None, fig=None):
     settings_contourf["offset"] = settings_contourf.get("offset", 0) + coord.z.min()
     ax.contourf(coord.x, coord.y, coord.z, **settings_contourf)
 
-    return fig, ax
+    return ax
