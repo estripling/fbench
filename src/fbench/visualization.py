@@ -1,3 +1,5 @@
+from enum import Enum
+
 import matplotlib.pyplot as plt
 import numpy as np
 import toolz
@@ -7,23 +9,72 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from fbench import structure, validation
 
 __all__ = (
+    "PlotConfig",
     "create_coordinates3d",
     "create_contour_plot",
 )
 
 
+class PlotConfig(Enum):
+    """Configurations for plotting."""
+
+    @classmethod
+    def get_kws_contour__base(cls):
+        """Returns kwargs for ``contour``: base configuration."""
+        return dict(
+            levels=12,
+            colors="dimgray",
+            antialiased=True,
+            linewidths=0.25,
+            alpha=1.0,
+            zorder=1,
+        )
+
+    @classmethod
+    def get_kws_contourf__base(cls):
+        """Returns kwargs for ``contourf``: base configuration."""
+        return dict(
+            levels=100,
+            antialiased=True,
+            alpha=0.61803,
+            zorder=0,
+        )
+
+    @classmethod
+    def get_kws_contourf__YlOrBr(cls):
+        """Returns kwargs for ``contourf``: YlOrBr configuration for dark max."""
+        output = dict(
+            cmap=cm.YlOrBr,
+        )
+        output.update(cls.get_kws_contourf__base())
+        return output
+
+    @classmethod
+    def get_kws_contourf__YlOrBr_r(cls):
+        """Returns kwargs for ``contourf``: YlOrBr configuration for dark min."""
+        output = dict(
+            cmap=cm.YlOrBr_r,
+        )
+        output.update(cls.get_kws_contourf__base())
+        return output
+
+
 @toolz.curry
-def create_contour_plot(coord, contourf_kws=None, contour_kws=None, ax=None):
+def create_contour_plot(coord, kws_contourf=None, kws_contour=None, ax=None):
     """Create a contour plot from X, Y, Z coordinate matrices.
 
     Parameters
     ----------
     coord : CoordinateMatrices
         The X, Y, Z coordinate matrices to plot.
-    contourf_kws : dict of keyword arguments
+    kws_contourf : dict of keyword arguments, default=None
         The kwargs are passed to ``matplotlib.axes.Axes.contourf``.
-    contour_kws : dict of keyword arguments
+        By default, using configuration: ``PlotConfig.get_kws_contourf__YlOrBr_r()``.
+        Optionally specify a dict of keyword arguments to update configurations.
+    kws_contour : dict of keyword arguments, default=None
         The kwargs are passed to ``matplotlib.axes.Axes.contour``.
+        By default, using configuration: ``PlotConfig.get_kws_contour__base()``.
+        Optionally specify a dict of keyword arguments to update configurations.
     ax: matplotlib.axes.Axes, default=None
         Optionally supply an Axes object.
         If None, the current Axes object is retrieved.
@@ -41,28 +92,13 @@ def create_contour_plot(coord, contourf_kws=None, contour_kws=None, ax=None):
     """  # noqa: E501
     ax = ax or plt.gca()
 
-    contourf_kws = {} if contourf_kws is None else contourf_kws
-    contourf_default_kws = dict(
-        levels=100,
-        cmap=cm.YlOrBr_r,
-        antialiased=True,
-        alpha=0.61803,
-        zorder=0,
-    )
-    contourf_kws.update(contourf_default_kws)
-    contour_plot = ax.contourf(coord.x, coord.y, coord.z, **contourf_kws)
+    settings_contourf = PlotConfig.get_kws_contourf__YlOrBr_r()
+    settings_contourf.update(kws_contourf or dict())
+    contour_plot = ax.contourf(coord.x, coord.y, coord.z, **settings_contourf)
 
-    contour_kws = {} if contour_kws is None else contour_kws
-    contour_default_kws = dict(
-        levels=12,
-        colors="dimgray",
-        antialiased=True,
-        linewidths=0.25,
-        alpha=1.0,
-        zorder=1,
-    )
-    contour_kws.update(contour_default_kws)
-    ax.contour(coord.x, coord.y, coord.z, **contour_default_kws)
+    settings_contour = PlotConfig.get_kws_contour__base()
+    settings_contour.update(kws_contour or dict())
+    ax.contour(coord.x, coord.y, coord.z, **settings_contour)
 
     plt.colorbar(
         contour_plot,

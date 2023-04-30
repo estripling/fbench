@@ -2,10 +2,25 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.testing as npt
+import pytest
 import toolz
 
 import fbench
 from fbench import structure
+
+
+@pytest.mark.parametrize(
+    "method_name",
+    [
+        "get_kws_contour__base",
+        "get_kws_contourf__base",
+        "get_kws_contourf__YlOrBr",
+        "get_kws_contourf__YlOrBr_r",
+    ],
+)
+def test_PlotConfig(method_name):
+    actual = getattr(fbench.PlotConfig, method_name)()
+    assert isinstance(actual, dict)
 
 
 def test_create_contour_plot():
