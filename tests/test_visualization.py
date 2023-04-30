@@ -1,5 +1,6 @@
 import matplotlib
 import matplotlib.pyplot as plt
+import mpl_toolkits
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -16,6 +17,9 @@ from fbench import structure
         "get_kws_contourf__base",
         "get_kws_contourf__YlOrBr",
         "get_kws_contourf__YlOrBr_r",
+        "get_kws_surface__base",
+        "get_kws_surface__YlOrBr",
+        "get_kws_surface__YlOrBr_r",
     ],
 )
 def test_PlotConfig(method_name):
@@ -49,3 +53,14 @@ def test_create_coordinates3d():
         z=np.array([[5.0, 4.0, 5.0], [10.0, 9.0, 10.0], [17.0, 16.0, 17.0]]),
     )
     npt.assert_almost_equal(actual, expected)
+
+
+def test_create_surface_plot():
+    fig, ax = toolz.pipe(
+        [-1, 0, 1],
+        fbench.create_coordinates3d(fbench.sphere),
+        fbench.create_surface_plot(),
+    )
+    plt.close()
+    assert isinstance(fig, matplotlib.figure.Figure)
+    assert isinstance(ax, mpl_toolkits.mplot3d.Axes3D)
