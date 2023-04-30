@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.0 (2023-04-30)
+### Feature
+* Add function configurations ([#8](https://github.com/estripling/fbench/issues/8)) ([`4610d34`](https://github.com/estripling/fbench/commit/4610d346573270fed232c801a276ce0a3d0cb201))
+* Add visualization functions ([#7](https://github.com/estripling/fbench/issues/7)) ([`31809ba`](https://github.com/estripling/fbench/commit/31809bafdcef0b1f00d14ccdef64c278e76acf5f))
+* Update project ([#6](https://github.com/estripling/fbench/issues/6)) ([`ee8f82c`](https://github.com/estripling/fbench/commit/ee8f82cbcc0bbbaea7a09a89c1e5f02170ca5694))
+
 ## v0.2.0 (2023-03-12)
 ### Feature
 * ***:** Add check_vector ([`fefa861`](https://github.com/estripling/fbench/commit/fefa8614f27082065ec61a8d2877ef44de195bf0))

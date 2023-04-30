@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fbench"
-version = "0.2.0"
+version = "0.3.0"
 description = "A collection of benchmark functions."
 authors = ["fBench Developers"]
 license = "BSD 3-Clause"
