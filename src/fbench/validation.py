@@ -18,7 +18,7 @@ def check_vector(x, /, *, min_elements):
     Returns
     -------
     np.ndarray
-        An n-dimensional vector.
+        An :math:`n`-dimensional vector.
 
     Raises
     ------
