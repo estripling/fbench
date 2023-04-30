@@ -14,7 +14,7 @@
 :maxdepth: 1
 :hidden:
 
-example.ipynb
+fBench-functions.ipynb
 changelog.md
 contributing.md
 developers.md

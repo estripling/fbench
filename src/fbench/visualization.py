@@ -35,8 +35,10 @@ def create_contour_plot(coord, contourf_kws=None, contour_kws=None, ax=None):
 
     Notes
     -----
-    Function is curried.
-    """
+    - Function is curried.
+    - Examples are shown in the
+      `Overview of fBench functions <https://fbench.readthedocs.io/en/stable/fBench-functions.html)>`_.
+    """  # noqa: E501
     ax = ax or plt.gca()
 
     contourf_kws = {} if contourf_kws is None else contourf_kws
