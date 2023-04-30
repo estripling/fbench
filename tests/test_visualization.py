@@ -1,8 +1,21 @@
+import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import numpy.testing as npt
+import toolz
 
 import fbench
 from fbench import structure
+
+
+def test_create_contour_plot():
+    actual = toolz.pipe(
+        [-1, 0, 1],
+        fbench.create_coordinates3d(fbench.sphere),
+        fbench.create_contour_plot(),
+    )
+    plt.close()
+    assert isinstance(actual, matplotlib.axes.Axes)
 
 
 def test_create_coordinates3d():

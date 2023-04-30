@@ -1,9 +1,73 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import toolz
+from matplotlib import cm
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 from fbench import structure, validation
 
-__all__ = ("create_coordinates3d",)
+__all__ = (
+    "create_coordinates3d",
+    "create_contour_plot",
+)
+
+
+@toolz.curry
+def create_contour_plot(coord, contourf_kws=None, contour_kws=None, ax=None):
+    """Create a contour plot from X, Y, Z coordinate matrices.
+
+    Parameters
+    ----------
+    coord : CoordinateMatrices
+        The X, Y, Z coordinate matrices to plot.
+    contourf_kws : dict of keyword arguments
+        The kwargs are passed to ``matplotlib.axes.Axes.contourf``.
+    contour_kws : dict of keyword arguments
+        The kwargs are passed to ``matplotlib.axes.Axes.contour``.
+    ax: matplotlib.axes.Axes, default=None
+        Optionally supply an Axes object.
+        If None, the current Axes object is retrieved.
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        An Axes object with filled contours and superimposed contour lines.
+
+    Notes
+    -----
+    Function is curried.
+    """
+    ax = ax or plt.gca()
+
+    contourf_kws = {} if contourf_kws is None else contourf_kws
+    contourf_default_kws = dict(
+        levels=100,
+        cmap=cm.YlOrBr_r,
+        antialiased=True,
+        alpha=0.61803,
+        zorder=0,
+    )
+    contourf_kws.update(contourf_default_kws)
+    contour_plot = ax.contourf(coord.x, coord.y, coord.z, **contourf_kws)
+
+    contour_kws = {} if contour_kws is None else contour_kws
+    contour_default_kws = dict(
+        levels=12,
+        colors="dimgray",
+        antialiased=True,
+        linewidths=0.25,
+        alpha=1.0,
+        zorder=1,
+    )
+    contour_kws.update(contour_default_kws)
+    ax.contour(coord.x, coord.y, coord.z, **contour_default_kws)
+
+    plt.colorbar(
+        contour_plot,
+        cax=make_axes_locatable(ax).append_axes("right", size="5%", pad=0.15),
+    )
+
+    return ax
 
 
 @toolz.curry
