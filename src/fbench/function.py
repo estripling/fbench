@@ -26,7 +26,7 @@ def ackley(x, /):
     Parameters
     ----------
     x : array_like
-        A real-valued vector to evaluate.
+        An :math:`n`-dimensional real vector.
 
     Returns
     -------
@@ -40,11 +40,15 @@ def ackley(x, /):
 
     Examples
     --------
-    >>> round(ackley([0, 0]), 4)
+    >>> import fbench
+    >>> round(fbench.ackley([0, 0]), 4)
     0.0
 
-    >>> round(ackley([1, 1]), 4)
-    3.6254
+    >>> round(fbench.ackley([1, 2]), 4)
+    5.4221
+
+    >>> round(fbench.ackley([1, 2, 3]), 4)
+    7.0165
     """
     x = validation.check_vector(x, min_elements=1)
     return float(
@@ -66,7 +70,7 @@ def rastrigin(x, /):
     Parameters
     ----------
     x : array_like
-        A real-valued vector to evaluate.
+        An :math:`n`-dimensional real vector.
 
     Returns
     -------
@@ -80,14 +84,18 @@ def rastrigin(x, /):
 
     Examples
     --------
-    >>> round(rastrigin([0, 0]), 4)
+    >>> import fbench
+    >>> round(fbench.rastrigin([0, 0]), 4)
     0.0
 
-    >>> round(rastrigin([1, 2]), 4)
+    >>> round(fbench.rastrigin([1, 2]), 4)
     5.0
 
-    >>> round(rastrigin([4.5, 4.5]), 4)
+    >>> round(fbench.rastrigin([4.5, 4.5]), 4)
     80.5
+
+    >>> round(fbench.rastrigin([1, 2, 3]), 4)
+    14.0
     """
     x = validation.check_vector(x, min_elements=1)
     return float(10 * len(x) + (x**2 - 10 * np.cos(2 * np.pi * x)).sum())
@@ -106,7 +114,7 @@ def rosenbrock(x, /):
     Parameters
     ----------
     x : array_like
-        A real-valued vector to evaluate.
+        An :math:`n`-dimensional real vector.
 
     Returns
     -------
@@ -120,16 +128,20 @@ def rosenbrock(x, /):
 
     Examples
     --------
-    >>> round(rosenbrock([0, 0]), 4)
+    >>> import fbench
+    >>> round(fbench.rosenbrock([0, 0]), 4)
     1.0
 
-    >>> round(rosenbrock([1, 1]), 4)
+    >>> round(fbench.rosenbrock([1, 1]), 4)
     0.0
 
-    >>> round(rosenbrock([1, 1, 1]), 4)
+    >>> round(fbench.rosenbrock([1, 1, 1]), 4)
     0.0
 
-    >>> round(rosenbrock([3, 3]), 4)
+    >>> round(fbench.rosenbrock([1, 2, 3]), 4)
+    201.0
+
+    >>> round(fbench.rosenbrock([3, 3]), 4)
     3604.0
     """
     x = validation.check_vector(x, min_elements=2)
@@ -146,7 +158,7 @@ def sphere(x, /):
     Parameters
     ----------
     x : array_like
-        A real-valued vector to evaluate.
+        An :math:`n`-dimensional real vector.
 
     Returns
     -------
@@ -160,11 +172,15 @@ def sphere(x, /):
 
     Examples
     --------
-    >>> sphere([0, 0])
+    >>> import fbench
+    >>> fbench.sphere([0, 0])
     0.0
 
-    >>> sphere([1, 1])
+    >>> fbench.sphere([1, 1])
     2.0
+
+    >>> fbench.sphere([1, 2, 3])
+    14.0
     """
     x = validation.check_vector(x, min_elements=1)
     return float((x**2).sum())

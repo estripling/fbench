@@ -1,8 +1,8 @@
 import numpy as np
 
-__all__ = ("check_vector",)
-
 from fbench import exception
+
+__all__ = ("check_vector",)
 
 
 def check_vector(x, /, *, min_elements):
@@ -18,7 +18,7 @@ def check_vector(x, /, *, min_elements):
     Returns
     -------
     np.ndarray
-        An n-dimensional vector.
+        The :math:`n`-dimensional vector.
 
     Raises
     ------
