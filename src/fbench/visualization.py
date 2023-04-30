@@ -73,7 +73,7 @@ def create_contour_plot(coord, contourf_kws=None, contour_kws=None, ax=None):
 
 
 @toolz.curry
-def create_coordinates3d(func1d, x_coord, y_coord=None, /):
+def create_coordinates3d(func, x_coord, y_coord=None, /):
     """Create X, Y, Z coordinate matrices from coordinate vectors and function.
 
     First, a meshgrid of (x, y)-coordinates is constructed from the coordinate vectors.
@@ -81,7 +81,7 @@ def create_coordinates3d(func1d, x_coord, y_coord=None, /):
 
     Parameters
     ----------
-    func1d : Callable[[np.ndarray], float]
+    func : Callable[[np.ndarray], float]
         A scalar-valued function that takes a two-dimensional, real vector as input.
     x_coord : np.ndarray
         An one-dimensional array for the x-coordinates of the grid.
@@ -113,5 +113,5 @@ def create_coordinates3d(func1d, x_coord, y_coord=None, /):
     x_coord = validation.check_vector(x_coord, min_elements=2)
     y_coord = validation.check_vector(y_coord, min_elements=2) if y_coord else x_coord
     x, y = np.meshgrid(x_coord, y_coord)
-    z = np.apply_along_axis(func1d=func1d, axis=1, arr=np.c_[x.ravel(), y.ravel()])
+    z = np.apply_along_axis(func1d=func, axis=1, arr=np.c_[x.ravel(), y.ravel()])
     return structure.CoordinateMatrices(x, y, z.reshape(x.shape))
