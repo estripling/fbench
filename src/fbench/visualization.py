@@ -91,7 +91,7 @@ class PlotConfig(Enum):
 
 
 @toolz.curry
-def create_contour_plot(coord, kws_contourf=None, kws_contour=None, ax=None):
+def create_contour_plot(coord, /, *, kws_contourf=None, kws_contour=None, ax=None):
     """Create a contour plot from X, Y, Z coordinate matrices.
 
     Parameters
@@ -185,7 +185,7 @@ def create_coordinates3d(func, x_coord, y_coord=None, /):
 
 
 @toolz.curry
-def create_surface_plot(coord, kws_surface=None, kws_contourf=None, fig=None):
+def create_surface_plot(coord, /, *, kws_surface=None, kws_contourf=None, fig=None):
     """Create a surface plot from X, Y, Z coordinate matrices.
 
     Parameters
