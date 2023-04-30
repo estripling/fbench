@@ -56,11 +56,10 @@ def test_create_coordinates3d():
 
 
 def test_create_surface_plot():
-    fig, ax = toolz.pipe(
+    ax = toolz.pipe(
         [-1, 0, 1],
         fbench.create_coordinates3d(fbench.sphere),
         fbench.create_surface_plot(),
     )
     plt.close()
-    assert isinstance(fig, matplotlib.figure.Figure)
     assert isinstance(ax, mpl_toolkits.mplot3d.Axes3D)
