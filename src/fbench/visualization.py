@@ -10,8 +10,8 @@ from fbench import structure, validation
 
 __all__ = (
     "PlotConfig",
-    "create_coordinates3d",
     "create_contour_plot",
+    "create_coordinates3d",
     "create_surface_plot",
 )
 
