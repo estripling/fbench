@@ -1,6 +1,6 @@
 import numpy as np
 
-from fbench import validation
+import fbench
 
 __all__ = (
     "ackley",
@@ -13,25 +13,28 @@ __all__ = (
 def ackley(x, /):
     """Ackley function.
 
+    A function :math:`f\\colon \\mathbb{R}^{n} \\rightarrow \\mathbb{R}`
+    that takes an :math:`n`-vector as input and returns a scalar value.
+
     .. math::
 
         f(\\mathbf{x}) =
         -20 \\exp \\left(
-            -0.2 \\sqrt{ \\frac{1}{n} \\sum_{i=1}^n x_i^2 }
+            -0.2 \\sqrt{ \\frac{1}{n} \\sum_{i=1}^{n} x_i^2 }
         \\right)
-        - \\exp \\left( \\frac{1}{n} \\sum_{i=1}^n \\cos(2 \\pi x_i) \\right)
+        - \\exp \\left( \\frac{1}{n} \\sum_{i=1}^{n} \\cos(2 \\pi x_i) \\right)
         + 20
         + e
 
     Parameters
     ----------
     x : array_like
-        An :math:`n`-dimensional real vector.
+        The :math:`n`-vector.
 
     Returns
     -------
     float
-        Function value at x.
+        Function value at :math:`\\mathbf{x}`.
 
     References
     ----------
@@ -50,7 +53,7 @@ def ackley(x, /):
     >>> round(fbench.ackley([1, 2, 3]), 4)
     7.0165
     """
-    x = validation.check_vector(x, min_elements=1)
+    x = fbench.check_vector(x, min_elements=1)
     return float(
         -20 * np.exp(-0.2 * np.sqrt((x**2).mean()))
         - np.exp((np.cos(2 * np.pi * x)).sum() / len(x))
@@ -62,20 +65,23 @@ def ackley(x, /):
 def rastrigin(x, /):
     """Rastrigin function.
 
+    A function :math:`f\\colon \\mathbb{R}^{n} \\rightarrow \\mathbb{R}`
+    that takes an :math:`n`-vector as input and returns a scalar value.
+
     .. math::
 
         f(\\mathbf{x}) =
-        10n + \\sum_{i=1}^n \\left( x_i^2 - 10 \\cos(2 \\pi x_i) \\right)
+        10n + \\sum_{i=1}^{n} \\left( x_i^2 - 10 \\cos(2 \\pi x_i) \\right)
 
     Parameters
     ----------
     x : array_like
-        An :math:`n`-dimensional real vector.
+        The :math:`n`-vector.
 
     Returns
     -------
     float
-        Function value at x.
+        Function value at :math:`\\mathbf{x}`.
 
     References
     ----------
@@ -97,12 +103,15 @@ def rastrigin(x, /):
     >>> round(fbench.rastrigin([1, 2, 3]), 4)
     14.0
     """
-    x = validation.check_vector(x, min_elements=1)
+    x = fbench.check_vector(x, min_elements=1)
     return float(10 * len(x) + (x**2 - 10 * np.cos(2 * np.pi * x)).sum())
 
 
 def rosenbrock(x, /):
     """Rosenbrock function.
+
+    A function :math:`f\\colon \\mathbb{R}^{n} \\rightarrow \\mathbb{R}`
+    that takes an :math:`n`-vector as input and returns a scalar value.
 
     .. math::
 
@@ -114,12 +123,12 @@ def rosenbrock(x, /):
     Parameters
     ----------
     x : array_like
-        An :math:`n`-dimensional real vector.
+        The :math:`n`-vector.
 
     Returns
     -------
     float
-        Function value at x.
+        Function value at :math:`\\mathbf{x}`.
 
     References
     ----------
@@ -144,26 +153,29 @@ def rosenbrock(x, /):
     >>> round(fbench.rosenbrock([3, 3]), 4)
     3604.0
     """
-    x = validation.check_vector(x, min_elements=2)
+    x = fbench.check_vector(x, min_elements=2)
     return float((100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2).sum())
 
 
 def sphere(x, /):
     """Sphere function.
 
+    A function :math:`f\\colon \\mathbb{R}^{n} \\rightarrow \\mathbb{R}`
+    that takes an :math:`n`-vector as input and returns a scalar value.
+
     .. math::
 
-       f(\\mathbf{x}) = \\sum_{i=1}^n x_i^2
+       f(\\mathbf{x}) = \\sum_{i=1}^{n} x_i^2
 
     Parameters
     ----------
     x : array_like
-        An :math:`n`-dimensional real vector.
+        The :math:`n`-vector.
 
     Returns
     -------
     float
-        Function value at x.
+        Function value at :math:`\\mathbf{x}`.
 
     References
     ----------
@@ -182,5 +194,5 @@ def sphere(x, /):
     >>> fbench.sphere([1, 2, 3])
     14.0
     """
-    x = validation.check_vector(x, min_elements=1)
+    x = fbench.check_vector(x, min_elements=1)
     return float((x**2).sum())
