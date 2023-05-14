@@ -53,7 +53,7 @@ def ackley(x, /):
     >>> round(fbench.ackley([1, 2, 3]), 4)
     7.0165
     """
-    x = fbench.check_vector(x, min_elements=1)
+    x = fbench.check_vector(x)
     return float(
         -20 * np.exp(-0.2 * np.sqrt((x**2).mean()))
         - np.exp((np.cos(2 * np.pi * x)).sum() / len(x))
@@ -103,7 +103,7 @@ def rastrigin(x, /):
     >>> round(fbench.rastrigin([1, 2, 3]), 4)
     14.0
     """
-    x = fbench.check_vector(x, min_elements=1)
+    x = fbench.check_vector(x)
     return float(10 * len(x) + (x**2 - 10 * np.cos(2 * np.pi * x)).sum())
 
 
@@ -153,7 +153,7 @@ def rosenbrock(x, /):
     >>> round(fbench.rosenbrock([3, 3]), 4)
     3604.0
     """
-    x = fbench.check_vector(x, min_elements=2)
+    x = fbench.check_vector(x, n_min=2)
     return float((100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2).sum())
 
 
@@ -194,5 +194,5 @@ def sphere(x, /):
     >>> fbench.sphere([1, 2, 3])
     14.0
     """
-    x = fbench.check_vector(x, min_elements=1)
+    x = fbench.check_vector(x)
     return float((x**2).sum())
