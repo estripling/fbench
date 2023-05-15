@@ -12,6 +12,7 @@ __all__ = (
     "create_contour_plot",
     "create_coordinates2d",
     "create_coordinates3d",
+    "create_line_plot",
     "create_surface_plot",
 )
 
@@ -58,6 +59,14 @@ class VizConfig(Enum):
         )
         output.update(cls.get_kws_contourf__base())
         return output
+
+    @classmethod
+    def get_kws_line__base(cls):
+        """Returns kwargs for ``line``: base configuration."""
+        return dict(
+            linewidth=2,
+            zorder=0,
+        )
 
     @classmethod
     def get_kws_surface__base(cls):
@@ -216,6 +225,42 @@ def create_coordinates3d(func, x_coord, y_coord=None, /):
     x, y = np.meshgrid(x_coord, y_coord)
     z = np.apply_along_axis(func1d=func, axis=1, arr=np.c_[x.ravel(), y.ravel()])
     return fbench.structure.CoordinateMatrices(x, y, z.reshape(x.shape))
+
+
+@toolz.curry
+def create_line_plot(coord, /, *, kws_line=None, ax=None):
+    """Create a line plot from (x, y) pairs.
+
+    Parameters
+    ----------
+    coord : CoordinatePairs
+        The (x, y) coordinate pairs.
+    kws_line : dict of keyword arguments, default=None
+        The kwargs are passed to ``matplotlib.axes.Axes.plot``.
+        By default, using configuration: ``VizConfig.get_kws_line__base()``.
+        Optionally specify a dict of keyword arguments to update configurations.
+    ax: matplotlib.axes.Axes, default=None
+        Optionally supply an ``Axes`` object.
+        If None, the current ``Axes`` object is retrieved.
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        The ``Axes`` object.
+
+    Notes
+    -----
+    - Function is curried.
+    - Examples are shown in the
+      `Overview of fBench functions <https://fbench.readthedocs.io/en/stable/fBench-functions.html>`_.
+    """  # noqa: E501
+    ax = ax or plt.gca()
+
+    settings_line = VizConfig.get_kws_line__base()
+    settings_line.update(kws_line or dict())
+    ax.plot(coord.x, coord.y, **settings_line)
+
+    return ax
 
 
 @toolz.curry

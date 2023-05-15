@@ -17,6 +17,7 @@ from fbench import structure
         "get_kws_contourf__base",
         "get_kws_contourf__YlOrBr",
         "get_kws_contourf__YlOrBr_r",
+        "get_kws_line__base",
         "get_kws_surface__base",
         "get_kws_surface__YlOrBr",
         "get_kws_surface__YlOrBr_r",
@@ -64,6 +65,16 @@ def test_create_coordinates3d():
         z=np.array([[5.0, 4.0, 5.0], [10.0, 9.0, 10.0], [17.0, 16.0, 17.0]]),
     )
     npt.assert_almost_equal(actual, expected)
+
+
+def test_create_line_plot():
+    actual = toolz.pipe(
+        [-1, 0, 1],
+        fbench.visualization.create_coordinates2d(fbench.sphere),
+        fbench.visualization.create_line_plot(),
+    )
+    plt.close()
+    assert isinstance(actual, matplotlib.axes.Axes)
 
 
 def test_create_surface_plot():
