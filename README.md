@@ -14,6 +14,7 @@ A collection of benchmark functions:
 
 - [Documentation](https://fbench.readthedocs.io/en/stable/index.html)
 - [Overview of fBench functions](https://fbench.readthedocs.io/en/stable/fBench-functions.html)
+- [Example usage](https://fbench.readthedocs.io/en/stable/example.html)
 - [API Reference](https://fbench.readthedocs.io/en/stable/autoapi/fbench/index.html)
 
 ## Installation

@@ -15,6 +15,7 @@
 :hidden:
 
 fBench-functions.ipynb
+example.ipynb
 changelog.md
 contributing.md
 developers.md

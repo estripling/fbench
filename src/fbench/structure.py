@@ -1,8 +1,11 @@
-from typing import Callable, NamedTuple, Optional, Tuple
+from typing import NamedTuple
 
 import numpy as np
 
-__all__ = ("CoordinateMatrices",)
+__all__ = (
+    "CoordinateMatrices",
+    "CoordinatePairs",
+)
 
 
 class CoordinateMatrices(NamedTuple):
@@ -13,11 +16,8 @@ class CoordinateMatrices(NamedTuple):
     z: np.ndarray
 
 
-class FunctionConfig(NamedTuple):
-    """An immutable data structure for a function configuration."""
+class CoordinatePairs(NamedTuple):
+    """An immutable data structure for (x, y) pairs."""
 
-    func: Callable[[np.ndarray], float]
-    x_bounds: Tuple[float, float]
-    y_bounds: Tuple[float, float]
-    global_minimum_x: Optional[np.ndarray]
-    global_minimum_fx: Optional[float]
+    x: np.ndarray
+    y: np.ndarray
