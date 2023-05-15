@@ -244,7 +244,7 @@ class FunctionPlotter:
         return fig, ax, ax3d
 
     def _plot_surface(self, fig, ax, ax3d):
-        fig = fig or plt.figure()
+        fig = fig or plt.gcf()
 
         ax3d = ax3d or fig.add_subplot(1, 1, 1, projection="3d")
         ax3d = create_surface_plot(self._coord, ax=ax3d)
@@ -254,7 +254,7 @@ class FunctionPlotter:
         return fig, ax, ax3d
 
     def _plot_contour(self, fig, ax, ax3d):
-        fig = fig or plt.figure()
+        fig = fig or plt.gcf()
 
         ax3d = None
 
@@ -270,7 +270,7 @@ class FunctionPlotter:
         return fig, ax, ax3d
 
     def _plot_line(self, fig, ax, ax3d):
-        fig = fig or plt.figure()
+        fig = fig or plt.gcf()
 
         ax3d = None
 
