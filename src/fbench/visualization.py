@@ -193,9 +193,9 @@ def create_coordinates3d(func, x_coord, y_coord=None, /):
     ----------
     func : Callable[[np.ndarray], float]
         A scalar-valued function that takes a two-dimensional, real vector as input.
-    x_coord : np.ndarray
+    x_coord : array_like
         An one-dimensional array for the x-coordinates of the grid.
-    y_coord : np.ndarray, default=None
+    y_coord : array_like, default=None
         An one-dimensional array for the y-coordinates of the grid.
         If None, ``y_coord`` equals ``x_coord``.
 
