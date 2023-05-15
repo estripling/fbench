@@ -22,7 +22,7 @@ __all__ = (
 
 
 class VizConfig(Enum):
-    """Configurations for plotting."""
+    """visualization configurations."""
 
     @classmethod
     def get_kws_contour__base(cls):
