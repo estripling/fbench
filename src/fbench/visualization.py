@@ -129,7 +129,7 @@ def create_contour_plot(coord, /, *, kws_contourf=None, kws_contour=None, ax=Non
     -----
     - Function is curried.
     - Examples are shown in the
-      `Overview of fBench functions <https://fbench.readthedocs.io/en/stable/fBench-functions.html)>`_.
+      `Overview of fBench functions <https://fbench.readthedocs.io/en/stable/fBench-functions.html>`_.
     """  # noqa: E501
     ax = ax or plt.gca()
 
@@ -292,7 +292,7 @@ def create_surface_plot(coord, /, *, kws_surface=None, kws_contourf=None, ax=Non
     -----
     - Function is curried.
     - Examples are shown in the
-      `Overview of fBench functions <https://fbench.readthedocs.io/en/stable/fBench-functions.html)>`_.
+      `Overview of fBench functions <https://fbench.readthedocs.io/en/stable/fBench-functions.html>`_.
     """  # noqa: E501
     ax = ax or plt.gcf().add_subplot(projection="3d")
 
