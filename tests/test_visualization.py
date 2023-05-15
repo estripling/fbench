@@ -78,10 +78,10 @@ def test_create_line_plot():
 
 
 def test_create_surface_plot():
-    ax = toolz.pipe(
+    actual = toolz.pipe(
         [-1, 0, 1],
         fbench.visualization.create_coordinates3d(fbench.sphere),
         fbench.visualization.create_surface_plot(),
     )
     plt.close()
-    assert isinstance(ax, mpl_toolkits.mplot3d.Axes3D)
+    assert isinstance(actual, mpl_toolkits.mplot3d.Axes3D)
