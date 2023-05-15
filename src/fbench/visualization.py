@@ -11,6 +11,7 @@ from fbench import structure, validation
 __all__ = (
     "PlotConfig",
     "create_contour_plot",
+    "create_coordinates2d",
     "create_coordinates3d",
     "create_surface_plot",
 )
@@ -138,6 +139,39 @@ def create_contour_plot(coord, /, *, kws_contourf=None, kws_contour=None, ax=Non
     )
 
     return ax
+
+
+@toolz.curry
+def create_coordinates2d(func, x_coord, /):
+    """Create (x, y) pairs from coordinate vector and function.
+
+    For each value of :math:`x`, compute function value :math:`y = f(x)`.
+
+    Parameters
+    ----------
+    func : Callable[[np.ndarray], float]
+        A scalar-valued function that takes an 1-vector as input.
+    x_coord : array_like
+        An one-dimensional array for the x-coordinates of the grid.
+
+    Returns
+    -------
+    CoordinatePairs
+        The (x, y) coordinate pairs.
+
+    Notes
+    -----
+    Function is curried.
+
+    Examples
+    --------
+    >>> import fbench
+    >>> fbench.visualization.create_coordinates2d(fbench.sphere, [-2, -1, 0, 1, 2])
+    CoordinatePairs(x=array([-2, -1,  0,  1,  2]), y=array([4., 1., 0., 1., 4.]))
+    """
+    x = fbench.check_vector(x_coord, n_min=2)
+    y = np.apply_along_axis(func1d=func, axis=1, arr=np.c_[x.ravel()])
+    return fbench.structure.CoordinatePairs(x, y)
 
 
 @toolz.curry

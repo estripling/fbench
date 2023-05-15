@@ -37,6 +37,15 @@ def test_create_contour_plot():
     assert isinstance(actual, matplotlib.axes.Axes)
 
 
+def test_create_coordinates2d():
+    actual = fbench.visualization.create_coordinates2d(fbench.sphere, [-2, -1, 0, 1, 2])
+    expected = fbench.structure.CoordinatePairs(
+        x=np.array([-2, -1, 0, 1, 2]),
+        y=np.array([4.0, 1.0, 0.0, 1.0, 4.0]),
+    )
+    npt.assert_almost_equal(actual, expected)
+
+
 def test_create_coordinates3d():
     actual = fbench.create_coordinates3d(fbench.sphere, [-1, 0, 1])
     expected = structure.CoordinateMatrices(
