@@ -1,3 +1,5 @@
+from typing import Callable
+
 import matplotlib
 import matplotlib.pyplot as plt
 import mpl_toolkits
@@ -7,7 +9,72 @@ import pytest
 import toolz
 
 import fbench
-from fbench import structure
+
+
+class TestFunctionPlotter:
+    @pytest.fixture
+    def func(self):
+        return lambda x: (x**2).sum()
+
+    def test_init(self, func):
+        bounds = [(-5, 5)]
+        actual = fbench.visualization.FunctionPlotter(func, bounds)
+        assert isinstance(actual.func, Callable)
+        assert actual.bounds == bounds
+
+    def test_init_with_invalid_bounds(self, func):
+        with pytest.raises(TypeError):
+            fbench.visualization.FunctionPlotter(func=func, bounds=[])
+
+        with pytest.raises(TypeError):
+            fbench.visualization.FunctionPlotter(func=func, bounds=[(-5, 5)] * 3)
+
+    def test_init_with_invalid_values_for_with_surface_and_with_contour(self, func):
+        with pytest.raises(ValueError):
+            fbench.visualization.FunctionPlotter(
+                func=func,
+                bounds=[(-5, 5)] * 2,
+                with_surface=False,
+                with_contour=False,
+            )
+
+    def test_default_plot__1d(self, func):
+        plotter = fbench.visualization.FunctionPlotter(func=func, bounds=[(-5, 5)] * 1)
+        fig, ax, ax3d = plotter.plot()
+        assert isinstance(fig, matplotlib.figure.Figure)
+        assert isinstance(ax, matplotlib.axes.Axes)
+        assert ax3d is None
+
+    def test_default_plot__2d(self, func):
+        plotter = fbench.visualization.FunctionPlotter(func=func, bounds=[(-5, 5)] * 2)
+        fig, ax, ax3d = plotter.plot()
+        assert isinstance(fig, matplotlib.figure.Figure)
+        assert isinstance(ax, matplotlib.axes.Axes)
+        assert isinstance(ax3d, mpl_toolkits.mplot3d.Axes3D)
+
+    def test_surface_plot(self, func):
+        plotter = fbench.visualization.FunctionPlotter(
+            func=func,
+            bounds=[(-5, 5)] * 2,
+            with_surface=True,
+            with_contour=False,
+        )
+        fig, ax, ax3d = plotter.plot()
+        assert isinstance(fig, matplotlib.figure.Figure)
+        assert ax is None
+        assert isinstance(ax3d, mpl_toolkits.mplot3d.Axes3D)
+
+    def test_contour_plot(self, func):
+        plotter = fbench.visualization.FunctionPlotter(
+            func=func,
+            bounds=[(-5, 5)] * 2,
+            with_surface=False,
+            with_contour=True,
+        )
+        fig, ax, ax3d = plotter.plot()
+        assert isinstance(fig, matplotlib.figure.Figure)
+        assert isinstance(ax, matplotlib.axes.Axes)
+        assert ax3d is None
 
 
 @pytest.mark.parametrize(
@@ -95,3 +162,19 @@ def test_create_discrete_cmap():
     assert all(
         isinstance(value, float) for color_tuple in color_list for value in color_tuple
     )
+
+
+def test_get_1d_plotter():
+    function_plotters = fbench.visualization.get_1d_plotter()
+    for name, plotter in function_plotters.items():
+        assert isinstance(name, str)
+        assert isinstance(plotter, fbench.visualization.FunctionPlotter)
+        assert isinstance(plotter.func, Callable)
+
+
+def test_get_2d_plotter():
+    function_plotters = fbench.visualization.get_2d_plotter()
+    for name, plotter in function_plotters.items():
+        assert isinstance(name, str)
+        assert isinstance(plotter, fbench.visualization.FunctionPlotter)
+        assert isinstance(plotter.func, Callable)
