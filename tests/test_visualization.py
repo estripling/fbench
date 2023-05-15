@@ -22,8 +22,8 @@ from fbench import structure
         "get_kws_surface__YlOrBr_r",
     ],
 )
-def test_PlotConfig(method_name):
-    actual = getattr(fbench.PlotConfig, method_name)()
+def test_viz_config_enum(method_name):
+    actual = getattr(fbench.visualization.VizConfig, method_name)()
     assert isinstance(actual, dict)
 
 

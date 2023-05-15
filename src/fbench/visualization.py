@@ -3,13 +3,12 @@ from enum import Enum
 import matplotlib.pyplot as plt
 import numpy as np
 import toolz
-from matplotlib import cm
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 from fbench import structure, validation
 
 __all__ = (
-    "PlotConfig",
+    "VizConfig",
     "create_contour_plot",
     "create_coordinates2d",
     "create_coordinates3d",
@@ -17,7 +16,7 @@ __all__ = (
 )
 
 
-class PlotConfig(Enum):
+class VizConfig(Enum):
     """Configurations for plotting."""
 
     @classmethod
@@ -46,7 +45,7 @@ class PlotConfig(Enum):
     def get_kws_contourf__YlOrBr(cls):
         """Returns kwargs for ``contourf``: YlOrBr configuration for dark max."""
         output = dict(
-            cmap=cm.YlOrBr,
+            cmap=plt.get_cmap("YlOrBr"),
         )
         output.update(cls.get_kws_contourf__base())
         return output
@@ -55,7 +54,7 @@ class PlotConfig(Enum):
     def get_kws_contourf__YlOrBr_r(cls):
         """Returns kwargs for ``contourf``: YlOrBr_r configuration for dark min."""
         output = dict(
-            cmap=cm.YlOrBr_r,
+            cmap=plt.get_cmap("YlOrBr_r"),
         )
         output.update(cls.get_kws_contourf__base())
         return output
@@ -77,7 +76,7 @@ class PlotConfig(Enum):
     def get_kws_surface__YlOrBr(cls):
         """Returns kwargs for ``plot_surface``: YlOrBr configuration for dark max."""
         output = dict(
-            cmap=cm.YlOrBr,
+            cmap=plt.get_cmap("YlOrBr"),
         )
         output.update(cls.get_kws_surface__base())
         return output
@@ -86,7 +85,7 @@ class PlotConfig(Enum):
     def get_kws_surface__YlOrBr_r(cls):
         """Returns kwargs for ``plot_surface``: YlOrBr_r configuration for dark min."""
         output = dict(
-            cmap=cm.YlOrBr_r,
+            cmap=plt.get_cmap("YlOrBr_r"),
         )
         output.update(cls.get_kws_surface__base())
         return output
@@ -102,11 +101,11 @@ def create_contour_plot(coord, /, *, kws_contourf=None, kws_contour=None, ax=Non
         The X, Y, Z coordinate matrices to plot.
     kws_contourf : dict of keyword arguments, default=None
         The kwargs are passed to ``matplotlib.axes.Axes.contourf``.
-        By default, using configuration: ``PlotConfig.get_kws_contourf__YlOrBr_r()``.
+        By default, using configuration: ``VizConfig.get_kws_contourf__YlOrBr_r()``.
         Optionally specify a dict of keyword arguments to update configurations.
     kws_contour : dict of keyword arguments, default=None
         The kwargs are passed to ``matplotlib.axes.Axes.contour``.
-        By default, using configuration: ``PlotConfig.get_kws_contour__base()``.
+        By default, using configuration: ``VizConfig.get_kws_contour__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
     ax: matplotlib.axes.Axes, default=None
         Optionally supply an ``Axes`` object.
@@ -125,11 +124,11 @@ def create_contour_plot(coord, /, *, kws_contourf=None, kws_contour=None, ax=Non
     """  # noqa: E501
     ax = ax or plt.gca()
 
-    settings_contourf = PlotConfig.get_kws_contourf__YlOrBr_r()
+    settings_contourf = VizConfig.get_kws_contourf__YlOrBr_r()
     settings_contourf.update(kws_contourf or dict())
     contour_plot = ax.contourf(coord.x, coord.y, coord.z, **settings_contourf)
 
-    settings_contour = PlotConfig.get_kws_contour__base()
+    settings_contour = VizConfig.get_kws_contour__base()
     settings_contour.update(kws_contour or dict())
     ax.contour(coord.x, coord.y, coord.z, **settings_contour)
 
@@ -231,11 +230,11 @@ def create_surface_plot(coord, /, *, kws_surface=None, kws_contourf=None, ax=Non
         The X, Y, Z coordinate matrices to plot.
     kws_surface : dict of keyword arguments, default=None
         The kwargs are passed to ``mpl_toolkits.mplot3d.axes3d.Axes3D.plot_surface``.
-        By default, using configuration: ``PlotConfig.get_kws_surface__YlOrBr_r()``.
+        By default, using configuration: ``VizConfig.get_kws_surface__YlOrBr_r()``.
         Optionally specify a dict of keyword arguments to update configurations.
     kws_contourf : dict of keyword arguments, default=None
         The kwargs are passed to ``mpl_toolkits.mplot3d.axes3d.Axes3D.contourf``.
-        By default, using configuration: ``PlotConfig.get_kws_contourf__YlOrBr_r()``.
+        By default, using configuration: ``VizConfig.get_kws_contourf__YlOrBr_r()``.
         Optionally specify a dict of keyword arguments to update configurations.
     ax: mpl_toolkits.mplot3d.axes3d.Axes3D, default=None
         Optionally supply an ``Axes3D`` object.
@@ -260,11 +259,11 @@ def create_surface_plot(coord, /, *, kws_surface=None, kws_contourf=None, ax=Non
     ax.yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
     ax.zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
 
-    settings_surface = PlotConfig.get_kws_surface__YlOrBr_r()
+    settings_surface = VizConfig.get_kws_surface__YlOrBr_r()
     settings_surface.update(kws_surface or dict())
     ax.plot_surface(coord.x, coord.y, coord.z, **settings_surface)
 
-    settings_contourf = PlotConfig.get_kws_contourf__YlOrBr_r()
+    settings_contourf = VizConfig.get_kws_contourf__YlOrBr_r()
     settings_contourf.update(kws_contourf or dict())
     settings_contourf["zdir"] = settings_contourf.get("zdir", "z")
     settings_contourf["offset"] = settings_contourf.get("offset", 0) + coord.z.min()
