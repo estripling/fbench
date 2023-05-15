@@ -5,7 +5,7 @@ import numpy as np
 import toolz
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-from fbench import structure, validation
+import fbench
 
 __all__ = (
     "VizConfig",
@@ -202,7 +202,7 @@ def create_coordinates3d(func, x_coord, y_coord=None, /):
     Examples
     --------
     >>> import fbench
-    >>> fbench.create_coordinates3d(fbench.sphere, [-1, 0, 1])
+    >>> fbench.visualization.create_coordinates3d(fbench.sphere, [-1, 0, 1])
     CoordinateMatrices(x=array([[-1,  0,  1],
            [-1,  0,  1],
            [-1,  0,  1]]), y=array([[-1, -1, -1],
@@ -211,13 +211,11 @@ def create_coordinates3d(func, x_coord, y_coord=None, /):
            [1., 0., 1.],
            [2., 1., 2.]]))
     """
-    x_coord = validation.check_vector(x_coord, min_elements=2)
-    y_coord = (
-        x_coord if y_coord is None else validation.check_vector(y_coord, min_elements=2)
-    )
+    x_coord = fbench.check_vector(x_coord, n_min=2)
+    y_coord = x_coord if y_coord is None else fbench.check_vector(y_coord, n_min=2)
     x, y = np.meshgrid(x_coord, y_coord)
     z = np.apply_along_axis(func1d=func, axis=1, arr=np.c_[x.ravel(), y.ravel()])
-    return structure.CoordinateMatrices(x, y, z.reshape(x.shape))
+    return fbench.structure.CoordinateMatrices(x, y, z.reshape(x.shape))
 
 
 @toolz.curry

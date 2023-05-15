@@ -30,8 +30,8 @@ def test_viz_config_enum(method_name):
 def test_create_contour_plot():
     actual = toolz.pipe(
         [-1, 0, 1],
-        fbench.create_coordinates3d(fbench.sphere),
-        fbench.create_contour_plot(),
+        fbench.visualization.create_coordinates3d(fbench.sphere),
+        fbench.visualization.create_contour_plot(),
     )
     plt.close()
     assert isinstance(actual, matplotlib.axes.Axes)
@@ -47,16 +47,18 @@ def test_create_coordinates2d():
 
 
 def test_create_coordinates3d():
-    actual = fbench.create_coordinates3d(fbench.sphere, [-1, 0, 1])
-    expected = structure.CoordinateMatrices(
+    actual = fbench.visualization.create_coordinates3d(fbench.sphere, [-1, 0, 1])
+    expected = fbench.structure.CoordinateMatrices(
         x=np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]),
         y=np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]]),
         z=np.array([[2.0, 1.0, 2.0], [1.0, 0.0, 1.0], [2.0, 1.0, 2.0]]),
     )
     npt.assert_almost_equal(actual, expected)
 
-    actual = fbench.create_coordinates3d(fbench.sphere, [-1, 0, 1], [2, 3, 4])
-    expected = structure.CoordinateMatrices(
+    actual = fbench.visualization.create_coordinates3d(
+        fbench.sphere, [-1, 0, 1], [2, 3, 4]
+    )
+    expected = fbench.structure.CoordinateMatrices(
         x=np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]),
         y=np.array([[2, 2, 2], [3, 3, 3], [4, 4, 4]]),
         z=np.array([[5.0, 4.0, 5.0], [10.0, 9.0, 10.0], [17.0, 16.0, 17.0]]),
@@ -67,8 +69,8 @@ def test_create_coordinates3d():
 def test_create_surface_plot():
     ax = toolz.pipe(
         [-1, 0, 1],
-        fbench.create_coordinates3d(fbench.sphere),
-        fbench.create_surface_plot(),
+        fbench.visualization.create_coordinates3d(fbench.sphere),
+        fbench.visualization.create_surface_plot(),
     )
     plt.close()
     assert isinstance(ax, mpl_toolkits.mplot3d.Axes3D)
