@@ -85,3 +85,13 @@ def test_create_surface_plot():
     )
     plt.close()
     assert isinstance(actual, mpl_toolkits.mplot3d.Axes3D)
+
+
+def test_create_discrete_cmap():
+    n = 5
+    color_list = fbench.visualization.create_discrete_cmap(n)
+    assert len(color_list) == n
+    assert all(len(color_tuple) == 4 for color_tuple in color_list)
+    assert all(
+        isinstance(value, float) for color_tuple in color_list for value in color_tuple
+    )

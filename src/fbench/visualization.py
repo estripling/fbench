@@ -14,6 +14,7 @@ __all__ = (
     "create_coordinates3d",
     "create_line_plot",
     "create_surface_plot",
+    "create_discrete_cmap",
 )
 
 
@@ -225,6 +226,40 @@ def create_coordinates3d(func, x_coord, y_coord=None, /):
     x, y = np.meshgrid(x_coord, y_coord)
     z = np.apply_along_axis(func1d=func, axis=1, arr=np.c_[x.ravel(), y.ravel()])
     return fbench.structure.CoordinateMatrices(x, y, z.reshape(x.shape))
+
+
+@toolz.curry
+def create_discrete_cmap(n, /, *, name="viridis_r", lower_bound=0.05, upper_bound=0.9):
+    """Create discrete values from colormap.
+
+    Parameters
+    ----------
+    n : int
+        Specify the number of discrete values.
+    name : str, default="viridis_r"
+        Specify the name of the colormap.
+    lower_bound : float, default=0.05,
+        Specify the lower bound of the colormap.
+    upper_bound : float, default=0.9,
+        Specify the upper bound of the colormap.
+
+    Returns
+    -------
+    list of tuple[float, float, float, float]
+        Discrete values from colormap.
+
+    Notes
+    -----
+    Function is curried.
+
+    Examples
+    --------
+    >>> import fbench
+    >>> fbench.visualization.create_discrete_cmap(2)
+    [(0.876168, 0.891125, 0.09525, 1.0), (0.282623, 0.140926, 0.457517, 1.0)]
+    """
+    cmap = plt.get_cmap(name)
+    return [cmap(i) for i in np.linspace(lower_bound, upper_bound, num=n)]
 
 
 @toolz.curry
