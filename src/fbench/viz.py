@@ -150,7 +150,7 @@ class FunctionPlotter:
     Examples
     --------
     >>> import fbench
-    >>> fbench.visualization.FunctionPlotter(func=fbench.sphere, bounds=[(-5, 5)])
+    >>> fbench.viz.FunctionPlotter(func=fbench.sphere, bounds=[(-5, 5)])
     FunctionPlotter(func=sphere, bounds=[(-5, 5)])
     """  # noqa: E501
 
@@ -378,7 +378,7 @@ def create_coordinates2d(func, x_coord, /):
     Examples
     --------
     >>> import fbench
-    >>> fbench.visualization.create_coordinates2d(fbench.sphere, [-2, -1, 0, 1, 2])
+    >>> fbench.viz.create_coordinates2d(fbench.sphere, [-2, -1, 0, 1, 2])
     CoordinatePairs(x=array([-2, -1,  0,  1,  2]), y=array([4., 1., 0., 1., 4.]))
     """
     x = fbench.check_vector(x_coord, n_min=2)
@@ -415,7 +415,7 @@ def create_coordinates3d(func, x_coord, y_coord=None, /):
     Examples
     --------
     >>> import fbench
-    >>> fbench.visualization.create_coordinates3d(fbench.sphere, [-1, 0, 1])
+    >>> fbench.viz.create_coordinates3d(fbench.sphere, [-1, 0, 1])
     CoordinateMatrices(x=array([[-1,  0,  1],
            [-1,  0,  1],
            [-1,  0,  1]]), y=array([[-1, -1, -1],
@@ -458,7 +458,7 @@ def create_discrete_cmap(n, /, *, name="viridis_r", lower_bound=0.05, upper_boun
     Examples
     --------
     >>> import fbench
-    >>> fbench.visualization.create_discrete_cmap(2)
+    >>> fbench.viz.create_discrete_cmap(2)
     [(0.876168, 0.891125, 0.09525, 1.0), (0.282623, 0.140926, 0.457517, 1.0)]
     """
     cmap = plt.get_cmap(name)

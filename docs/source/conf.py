@@ -53,7 +53,7 @@ def skip_util_classes(app, what, name, obj, skip, options):
     if what == "module":
         skip = True
 
-    modules_to_show = ["visualization"]
+    modules_to_show = ["viz"]
     if what == "module" and any(n in name for n in modules_to_show):
         skip = False
 
