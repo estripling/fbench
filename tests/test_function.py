@@ -68,3 +68,11 @@ def test_rosenbrock(x, expected):
 def test_sphere(x, expected):
     actual = fbench.sphere(x)
     assert actual == expected
+
+
+def test_get_optima():
+    actual = fbench.get_optima(2)
+    assert all(callable(k) for k in actual.keys())
+    assert all(
+        isinstance(opt, fbench.structure.Optimum) for v in actual.values() for opt in v
+    )

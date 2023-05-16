@@ -4,6 +4,7 @@ import fbench
 
 __all__ = (
     "ackley",
+    "get_optima",
     "rastrigin",
     "rosenbrock",
     "sphere",
@@ -60,6 +61,27 @@ def ackley(x, /):
         + 20
         + np.e
     )
+
+
+def get_optima(n, /):
+    """Retrieve optima for defined functions.
+
+    Parameters
+    ----------
+    n : int
+        Specify the number of dimensions :math:`n`.
+
+    Returns
+    -------
+    dict[Callable, list[Optimum]]
+        All optima of defined functions for specified dimension.
+    """
+    return {
+        ackley: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
+        rastrigin: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
+        rosenbrock: [fbench.structure.Optimum(fbench.check_vector([1] * n), 0)],
+        sphere: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
+    }
 
 
 def rastrigin(x, /):

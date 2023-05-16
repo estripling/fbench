@@ -5,6 +5,7 @@ import numpy as np
 __all__ = (
     "CoordinateMatrices",
     "CoordinatePairs",
+    "Optimum",
 )
 
 
@@ -21,3 +22,10 @@ class CoordinatePairs(NamedTuple):
 
     x: np.ndarray
     y: np.ndarray
+
+
+class Optimum(NamedTuple):
+    """Define optimum for :math:`f\\colon \\mathbb{R}^{n} \\rightarrow \\mathbb{R}`."""
+
+    x: np.ndarray
+    fx: float
