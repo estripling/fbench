@@ -472,7 +472,7 @@ def create_discrete_cmap(n, /, *, name="viridis_r", lower_bound=0.05, upper_boun
 
     Returns
     -------
-    list of tuple[float, float, float, float]
+    list[tuple[float, float, float, float]]
         Discrete values from colormap.
 
     Notes
@@ -582,7 +582,7 @@ def get_1d_plotter():
 
     Returns
     -------
-    dict of FunctionPlotter
+    dict[str, FunctionPlotter]
         Predefined FunctionPlotter instances.
     """
     return {
@@ -604,7 +604,7 @@ def get_2d_plotter():
 
     Returns
     -------
-    dict of FunctionPlotter
+    dict[str, FunctionPlotter]
         Predefined FunctionPlotter instances.
     """
     return {
