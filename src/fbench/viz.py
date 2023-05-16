@@ -350,7 +350,7 @@ def create_contour_plot(coord, /, *, kws_contourf=None, kws_contour=None, ax=Non
 
     Returns
     -------
-    matplotlib.axes.Axes
+    ax : matplotlib.axes.Axes
         The ``Axes`` object with filled contours and superimposed contour lines.
 
     Notes
@@ -507,7 +507,7 @@ def create_line_plot(coord, /, *, kws_line=None, ax=None):
 
     Returns
     -------
-    matplotlib.axes.Axes
+    ax : matplotlib.axes.Axes
         The ``Axes`` object.
 
     Notes
