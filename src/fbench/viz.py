@@ -203,7 +203,31 @@ class FunctionPlotter:
         return self._bounds
 
     def plot(self, fig=None, ax=None, ax3d=None):
-        """Generate the plot."""
+        """Generate the plot.
+
+        Parameters
+        ----------
+        fig : matplotlib.figure.Figure, default=None
+            Optionally supply a ``Figure`` object.
+            If None, the current ``Figure`` object is retrieved.
+        ax : matplotlib.axes.Axes, default=None
+            Optionally supply an ``Axes`` object.
+            If None, the current ``Axes`` object is retrieved.
+        ax3d : mpl_toolkits.mplot3d.axes3d.Axes3D, default=None
+            Optionally supply an ``Axes3D`` object.
+            If None, the current ``Axes3D`` object is retrieved.
+
+        Returns
+        -------
+        tuple[fig, ax, ax3d]
+            The created plot objects.
+
+        Notes
+        -----
+        When creating both a surface and contour plot and either
+        ``ax`` or ``ax3d`` is specified, it is best to also supply ``fig``.
+        To this end, it might be easier to only supply a ``fig`` object.
+        """
         self._set_coord_attr()
 
         if self._size == 1:
