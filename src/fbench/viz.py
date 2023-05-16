@@ -344,7 +344,7 @@ def create_contour_plot(coord, /, *, kws_contourf=None, kws_contour=None, ax=Non
         The kwargs are passed to ``matplotlib.axes.Axes.contour``.
         By default, using configuration: ``VizConfig.get_kws_contour__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
-    ax: matplotlib.axes.Axes, default=None
+    ax : matplotlib.axes.Axes, default=None
         Optionally supply an ``Axes`` object.
         If None, the current ``Axes`` object is retrieved.
 
@@ -501,7 +501,7 @@ def create_line_plot(coord, /, *, kws_line=None, ax=None):
         The kwargs are passed to ``matplotlib.axes.Axes.plot``.
         By default, using configuration: ``VizConfig.get_kws_line__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
-    ax: matplotlib.axes.Axes, default=None
+    ax : matplotlib.axes.Axes, default=None
         Optionally supply an ``Axes`` object.
         If None, the current ``Axes`` object is retrieved.
 
@@ -541,7 +541,7 @@ def create_surface_plot(coord, /, *, kws_surface=None, kws_contourf=None, ax=Non
         The kwargs are passed to ``mpl_toolkits.mplot3d.axes3d.Axes3D.contourf``.
         By default, using configuration: ``VizConfig.get_kws_contourf__YlOrBr_r()``.
         Optionally specify a dict of keyword arguments to update configurations.
-    ax: mpl_toolkits.mplot3d.axes3d.Axes3D, default=None
+    ax : mpl_toolkits.mplot3d.axes3d.Axes3D, default=None
         Optionally supply an ``Axes3D`` object.
         If None, the current ``Axes3D`` object is retrieved.
 
