@@ -72,7 +72,7 @@ def beale(x, /):
     """Beale function.
 
     A function :math:`f\\colon \\mathbb{R}^{2} \\rightarrow \\mathbb{R}`
-    that takes an :math:`2`-vector as input and returns a scalar value.
+    that takes a :math:`2`-vector as input and returns a scalar value.
 
     .. math::
 
@@ -142,9 +142,12 @@ def get_optima(n, /, func):
     - Function is curried.
     - Optima are defined for the following functions:
         - ackley
+        - beale
         - peaks
         - rastrigin
         - rosenbrock
+        - schwefel
+        - sinc
         - sphere
 
     Examples
@@ -188,7 +191,7 @@ def peaks(x, /):
     """Peaks function.
 
     A function :math:`f\\colon \\mathbb{R}^{2} \\rightarrow \\mathbb{R}`
-    that takes an :math:`2`-vector as input and returns a scalar value.
+    that takes a :math:`2`-vector as input and returns a scalar value.
 
     .. math::
 
