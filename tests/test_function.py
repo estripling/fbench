@@ -22,6 +22,19 @@ def test_ackley(x, expected):
 @pytest.mark.parametrize(
     "x, expected",
     [
+        ([0, 0], 0.9810),
+        ([1, 1], 2.4338),
+        ([2, 2], 0.1328),
+    ],
+)
+def test_peaks(x, expected):
+    actual = fbench.peaks(x)
+    assert round(actual, 4) == expected
+
+
+@pytest.mark.parametrize(
+    "x, expected",
+    [
         ([0], 0.0),
         ([0, 0], 0.0),
         ([1, 1], 2.0),

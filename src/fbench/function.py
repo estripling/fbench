@@ -6,6 +6,7 @@ import fbench
 __all__ = (
     "ackley",
     "get_optima",
+    "peaks",
     "rastrigin",
     "rosenbrock",
     "sphere",
@@ -86,6 +87,7 @@ def get_optima(n, /, func):
     - Function is curried.
     - Optima are defined for the following functions:
         - ackley
+        - peaks
         - rastrigin
         - rosenbrock
         - sphere
@@ -102,11 +104,55 @@ def get_optima(n, /, func):
     """
     optima = {
         ackley: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
+        peaks: [
+            fbench.structure.Optimum(
+                fbench.check_vector([0.228279999979237, -1.625531071954464]),
+                -6.551133332622496,
+            )
+        ],
         rastrigin: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
         rosenbrock: [fbench.structure.Optimum(fbench.check_vector([1] * n), 0)],
         sphere: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
     }
     return optima.get(func, None)
+
+
+def peaks(x, /):
+    """Peaks function.
+
+    A function :math:`f\\colon \\mathbb{R}^{2} \\rightarrow \\mathbb{R}`
+    that takes an :math:`2`-vector as input and returns a scalar value.
+
+    .. math::
+
+       f(\\mathbf{x}) =
+       3 (1 - x_{1})^{2}
+         \\exp\\left( - x_{1}^{2} - (x_{2} + 1)^{2} \\right)
+       - 10 \\left( \\frac{x_{1}}{5} - x_{1}^{3} - x_{2}^{5} \\right)
+         \\exp\\left( - x_{1}^{2} - x_{2}^{2} \\right)
+       - \\frac{1}{3} \\exp\\left( - (x_{1} + 1)^{2} - x_{2}^{2} \\right)
+
+    Parameters
+    ----------
+    x : array_like
+        The :math:`2`-vector.
+
+    Returns
+    -------
+    float
+        Function value at :math:`\\mathbf{x}`.
+
+    Examples
+    --------
+    >>> import fbench
+    >>> round(fbench.peaks([0, 0]), 4)
+    0.981
+    """
+    x1, x2 = fbench.check_vector(x, n_max=2)
+    f1 = 3 * (1 - x1) ** 2 * np.exp(-(x1**2) - (x2 + 1) ** 2)
+    f2 = 10 * (x1 / 5 - x1**3 - x2**5) * np.exp(-(x1**2) - x2**2)
+    f3 = 1 / 3 * np.exp(-((x1 + 1) ** 2) - x2**2)
+    return float(f1 - f2 - f3)
 
 
 def rastrigin(x, /):

@@ -678,6 +678,10 @@ def get_2d_plotter():
             func=fbench.ackley,
             bounds=((-5, 5), (-5, 5)),
         ),
+        "Peaks": FunctionPlotter(
+            func=fbench.peaks,
+            bounds=((-4, 4), (-4, 4)),
+        ),
         "Rastrigin_2D": FunctionPlotter(
             func=fbench.rastrigin,
             bounds=((-5.12, 5.12), (-5.12, 5.12)),
