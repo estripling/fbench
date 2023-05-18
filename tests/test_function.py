@@ -35,6 +35,20 @@ def test_peaks(x, expected):
 @pytest.mark.parametrize(
     "x, expected",
     [
+        ([3, 0.5], 0.0),
+        ([0, 0], 14.2031),
+        ([1, 1], 14.2031),
+        ([2, 2], 356.7031),
+    ],
+)
+def test_beale(x, expected):
+    actual = fbench.beale(x)
+    assert round(actual, 4) == expected
+
+
+@pytest.mark.parametrize(
+    "x, expected",
+    [
         ([0], 0.0),
         ([0, 0], 0.0),
         ([1, 1], 2.0),

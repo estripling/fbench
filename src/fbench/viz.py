@@ -693,6 +693,15 @@ def get_2d_plotter():
             func=fbench.ackley,
             bounds=((-5, 5), (-5, 5)),
         ),
+        "Beale_2D": FunctionPlotter(
+            func=fbench.beale,
+            bounds=((-4.5, 4.5), (-4.5, 4.5)),
+        ),
+        "Beale_2D_log1p": FunctionPlotter(
+            func=toolz.compose_left(fbench.beale, np.log1p),
+            bounds=((-4.5, 4.5), (-4.5, 4.5)),
+            optima=[fbench.structure.Optimum(fbench.check_vector([3, 0.5]), 0)],
+        ),
         "Peaks": FunctionPlotter(
             func=fbench.peaks,
             bounds=((-4, 4), (-4, 4)),

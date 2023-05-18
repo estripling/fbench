@@ -5,6 +5,7 @@ import fbench
 
 __all__ = (
     "ackley",
+    "beale",
     "get_optima",
     "peaks",
     "rastrigin",
@@ -67,6 +68,58 @@ def ackley(x, /):
     )
 
 
+def beale(x, /):
+    """Beale function.
+
+    A function :math:`f\\colon \\mathbb{R}^{2} \\rightarrow \\mathbb{R}`
+    that takes an :math:`2`-vector as input and returns a scalar value.
+
+    .. math::
+
+       f(\\mathbf{x}) =
+       \\left( 1.5 - x_{1} + x_{1} x_{2} \\right)^{2}
+       + \\left( 2.25 - x_{1} + x_{1} x_{2}^{2} \\right)^{2}
+       + \\left( 2.625 - x_{1} + x_{1} x_{2}^{3}\\right)^{2}
+
+    Parameters
+    ----------
+    x : array_like
+        The :math:`2`-vector.
+
+    Returns
+    -------
+    float
+        Function value at :math:`\\mathbf{x}`.
+
+    References
+    ----------
+    .. [1] "Test functions for optimization", Wikipedia,
+           `<https://en.wikipedia.org/wiki/Test_functions_for_optimization>`_
+    .. [2] "Beale function", Virtual Library of Simulation Experiments:
+           Test Functions and Datasets, `<https://www.sfu.ca/~ssurjano/beale.html>`_
+
+    Examples
+    --------
+    >>> import fbench
+    >>> fbench.beale([3, 0.5])
+    0.0
+
+    >>> round(fbench.beale([0, 0]), 4)
+    14.2031
+
+    >>> round(fbench.beale([1, 1]), 4)
+    14.2031
+
+    >>> round(fbench.beale([2, 2]), 4)
+    356.7031
+    """
+    x1, x2 = fbench.check_vector(x, n_max=2)
+    f1 = (1.5 - x1 + x1 * x2) ** 2
+    f2 = (2.25 - x1 + x1 * x2**2) ** 2
+    f3 = (2.625 - x1 + x1 * x2**3) ** 2
+    return float(f1 + f2 + f3)
+
+
 @toolz.curry
 def get_optima(n, /, func):
     """Retrieve optima for defined functions.
@@ -106,6 +159,7 @@ def get_optima(n, /, func):
     """
     optima = {
         ackley: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
+        beale: [fbench.structure.Optimum(fbench.check_vector([3, 0.5]), 0)],
         peaks: [
             fbench.structure.Optimum(
                 fbench.check_vector([0.228279999979237, -1.625531071954464]),
