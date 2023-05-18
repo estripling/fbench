@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.1 (2023-05-18)
+
+
 ## v1.0.0 (2023-05-18)
 ### Feature
 * Add more benchmark functions ([#13](https://github.com/estripling/fbench/issues/13)) ([`12406bc`](https://github.com/estripling/fbench/commit/12406bc5c57681e1418ad2a9edf27fc8877ae530))
