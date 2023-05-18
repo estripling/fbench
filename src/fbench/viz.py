@@ -18,6 +18,7 @@ __all__ = (
     "create_discrete_cmap",
     "get_1d_plotter",
     "get_2d_plotter",
+    "plot_optima",
 )
 
 
@@ -73,6 +74,15 @@ class VizConfig(Enum):
         )
 
     @classmethod
+    def get_kws_scatter__base(cls):
+        """Returns kwargs for ``.scatter()``: base configuration."""
+        return dict(
+            s=60,
+            c="black",
+            zorder=2,
+        )
+
+    @classmethod
     def get_kws_surface__base(cls):
         """Returns kwargs for ``plot_surface``: base configuration."""
         return dict(
@@ -117,6 +127,8 @@ class FunctionPlotter:
         Specify if the function surface plot should be generated.
     with_contour : bool, default=True
         Specify if the contour plot should be generated.
+    with_optima : bool, default=True
+        Specify if scatter points for the optima should be added.
     n_grid_points : int, default=101
         Specify the number of grid points on one axis.
         Ignored if ``x_coord`` or ``y_coord`` is specified.
@@ -124,6 +136,9 @@ class FunctionPlotter:
         Specify coordinates on the x-axis.
     x_coord : sequence, default=None
         Specify coordinates on the y-axis.
+    optima : sequence[Optimum], default=None
+        Specify optima to plot. If None, retrieve them from :func:`get_optima`.
+        Note that optima are only added to the plot if a defintion exists.
     kws_surface : dict of keyword arguments, default=None
         The kwargs are passed to ``mpl_toolkits.mplot3d.axes3d.Axes3D.plot_surface``.
         By default, using configuration: ``VizConfig.get_kws_surface__YlOrBr_r()``.
@@ -140,12 +155,20 @@ class FunctionPlotter:
         The kwargs are passed to ``matplotlib.axes.Axes.plot``.
         By default, using configuration: ``VizConfig.get_kws_line__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
+    kws_scatter : dict of keyword arguments, default=None
+        The kwargs are passed to ``matplotlib.axes.Axes.scatter`` or
+        ``mpl_toolkits.mplot3d.axes3d.Axes3D.scatter``.
+        By default, using configuration: ``VizConfig.get_kws_scatter__base()``.
+        Optionally specify a dict of keyword arguments to update configurations.
 
     Notes
     -----
-    - Function is curried.
     - Examples are shown in the
       `Overview of fBench functions <https://fbench.readthedocs.io/en/stable/fBench-functions.html>`_.
+
+    See Also
+    --------
+    fbench.get_optima : Retrieve optima for defined functions.
 
     Examples
     --------
@@ -160,25 +183,31 @@ class FunctionPlotter:
         bounds,
         with_surface=True,
         with_contour=True,
+        with_optima=True,
         n_grid_points=101,
         x_coord=None,
         y_coord=None,
+        optima=None,
         kws_surface=None,
         kws_contourf=None,
         kws_contour=None,
         kws_line=None,
+        kws_scatter=None,
     ):
         self._func = func
         self._bounds = bounds
         self._with_surface = with_surface
         self._with_contour = with_contour
+        self._with_optima = with_optima
         self._n_grid_points = n_grid_points
         self._x_coord = x_coord
         self._y_coord = y_coord
+        self._optima = optima
         self._kws_contourf = kws_contourf
         self._kws_contour = kws_contour
         self._kws_surface = kws_surface
         self._kws_line = kws_line
+        self._kws_scatter = kws_scatter
 
         self._size = len(bounds)
         self._coord = None
@@ -219,8 +248,12 @@ class FunctionPlotter:
 
         Returns
         -------
-        tuple[fig, ax, ax3d]
-            The created plot objects.
+        fig : matplotlib.figure.Figure
+            The ``Figure`` object.
+        ax : matplotlib.axes.Axes
+            The ``Axes`` object.
+        ax3d : mpl_toolkits.mplot3d.axes3d.Axes3D
+            The ``Axes3D`` object of the surface.
 
         Notes
         -----
@@ -242,6 +275,9 @@ class FunctionPlotter:
 
             if not self._with_surface and self._with_contour:
                 fig, ax, ax3d = self._plot_contour(fig, ax, ax3d)
+
+        if self._with_optima:
+            ax, ax3d = self._add_optima(ax, ax3d)
 
         return fig, ax, ax3d
 
@@ -306,6 +342,19 @@ class FunctionPlotter:
         )
 
         return fig, ax, ax3d
+
+    def _add_optima(self, ax, ax3d):
+        optima = self._optima or fbench.get_optima(self._size, self.func)
+
+        if optima is not None:
+            ax, ax3d = plot_optima(
+                optima,
+                ax=ax,
+                ax3d=ax3d,
+                kws_scatter=self._kws_scatter,
+            )
+
+        return ax, ax3d
 
     def _set_coord_attr(self):
         """Private setter for coordinate attribute."""
@@ -629,3 +678,52 @@ def get_2d_plotter():
             bounds=((-2, 2), (-2, 2)),
         ),
     }
+
+
+def plot_optima(optima, /, *, ax=None, ax3d=None, kws_scatter=None):
+    """Add optima as scatter points to plot.
+
+    Parameters
+    ----------
+    optima : sequence of Optimum
+        The optima to plot.
+    ax : matplotlib.axes.Axes, default=None
+        Specify the ``Axes`` object if scatter points should be added to it.
+    ax3d : mpl_toolkits.mplot3d.axes3d.Axes3D, default=None
+        Specify the ``Axes3D`` object if scatter points should be added to it.
+    kws_scatter : dict of keyword arguments, default=None
+        The kwargs are passed to ``matplotlib.axes.Axes.scatter`` or
+        ``mpl_toolkits.mplot3d.axes3d.Axes3D.scatter``.
+        By default, using configuration: ``VizConfig.get_kws_scatter__base()``.
+        Optionally specify a dict of keyword arguments to update configurations.
+
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+        The ``Axes`` object.
+    ax3d : mpl_toolkits.mplot3d.axes3d.Axes3D
+        The ``Axes3D`` object of the surface.
+    """
+    n = optima[0].n
+
+    settings_scatter = VizConfig.get_kws_scatter__base()
+    settings_scatter.update(kws_scatter or dict())
+
+    if n == 1 and ax is not None:
+        # line
+        for optimum in optima:
+            ax.scatter(optimum.x, optimum.fx, **settings_scatter)
+
+    if n == 2 and ax is not None:
+        # contour
+        for optimum in optima:
+            ax.scatter(*optimum.x, **settings_scatter)
+
+    if n == 2 and ax3d is not None:
+        # surface
+        for optimum in optima:
+            zmin = ax3d.get_zlim()[0]
+            ax3d.scatter(*optimum.x, zmin, **settings_scatter)
+            ax3d.scatter(*optimum.x, optimum.fx, **settings_scatter)
+
+    return ax, ax3d

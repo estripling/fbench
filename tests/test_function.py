@@ -1,3 +1,5 @@
+import numpy as np
+import numpy.testing as npt
 import pytest
 
 import fbench
@@ -70,9 +72,21 @@ def test_sphere(x, expected):
     assert actual == expected
 
 
-def test_get_optima():
-    actual = fbench.get_optima(2)
-    assert all(callable(k) for k in actual.keys())
-    assert all(
-        isinstance(opt, fbench.structure.Optimum) for v in actual.values() for opt in v
-    )
+@pytest.mark.parametrize(
+    "func, n, idx, expected_x, expected_fx",
+    [
+        (fbench.ackley, 1, 0, np.zeros(1), 0),
+        (fbench.ackley, 2, 0, np.zeros(2), 0),
+        (fbench.ackley, 5, 0, np.zeros(5), 0),
+        (fbench.rastrigin, 5, 0, np.zeros(5), 0),
+        (fbench.rosenbrock, 5, 0, np.ones(5), 0),
+        (fbench.sphere, 5, 0, np.zeros(5), 0),
+    ],
+)
+def test_get_optima(func, n, idx, expected_x, expected_fx):
+    actual = fbench.get_optima(n, func)
+    assert all(isinstance(opt, fbench.structure.Optimum) for opt in actual)
+    opt = actual[idx]
+    npt.assert_array_almost_equal(opt.x, expected_x)
+    assert opt.fx == expected_fx
+    assert opt.n == n

@@ -29,3 +29,8 @@ class Optimum(NamedTuple):
 
     x: np.ndarray
     fx: float
+
+    @property
+    def n(self):
+        """Dimensionality of :math:`x`."""
+        return len(self.x)

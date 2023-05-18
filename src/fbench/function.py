@@ -1,4 +1,5 @@
 import numpy as np
+import toolz
 
 import fbench
 
@@ -63,25 +64,49 @@ def ackley(x, /):
     )
 
 
-def get_optima(n, /):
+@toolz.curry
+def get_optima(n, /, func):
     """Retrieve optima for defined functions.
 
     Parameters
     ----------
     n : int
         Specify the number of dimensions :math:`n`.
+    func : callable
+        A fBench function to retrieve its optima.
+        None is returned if no optima is defined.
 
     Returns
     -------
-    dict[Callable, list[Optimum]]
-        All optima of defined functions for specified dimension.
+    Optional[list[Optimum]]]
+        Optima with specified dimension for fBench function if defined.
+
+    Notes
+    -----
+    - Function is curried.
+    - Optima are defined for the following functions:
+        - ackley
+        - rastrigin
+        - rosenbrock
+        - sphere
+
+    Examples
+    --------
+    >>> import fbench
+    >>> optima = fbench.get_optima(5, fbench.sphere)
+    >>> optima
+    [Optimum(x=array([0, 0, 0, 0, 0]), fx=0)]
+    >>> optimum = optima[0]
+    >>> optimum.n
+    5
     """
-    return {
+    optima = {
         ackley: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
         rastrigin: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
         rosenbrock: [fbench.structure.Optimum(fbench.check_vector([1] * n), 0)],
         sphere: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
     }
+    return optima.get(func, None)
 
 
 def rastrigin(x, /):
