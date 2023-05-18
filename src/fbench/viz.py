@@ -710,6 +710,10 @@ def get_2d_plotter():
             bounds=((-2, 2), (-2, 2)),
             optima=[fbench.structure.Optimum(fbench.check_vector([1] * 2), 0)],
         ),
+        "Schwefel_2D": FunctionPlotter(
+            func=fbench.schwefel,
+            bounds=((-500, 500), (-500, 500)),
+        ),
         "Sphere_2D": FunctionPlotter(
             func=fbench.sphere,
             bounds=((-2, 2), (-2, 2)),

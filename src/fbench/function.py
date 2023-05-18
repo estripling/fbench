@@ -9,6 +9,7 @@ __all__ = (
     "peaks",
     "rastrigin",
     "rosenbrock",
+    "schwefel",
     "sinc",
     "sphere",
 )
@@ -113,6 +114,7 @@ def get_optima(n, /, func):
         ],
         rastrigin: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
         rosenbrock: [fbench.structure.Optimum(fbench.check_vector([1] * n), 0)],
+        schwefel: [fbench.structure.Optimum(fbench.check_vector([420.9687] * n), 0)],
         sinc: [
             fbench.structure.Optimum(
                 fbench.check_vector([-4.493409471849579]),
@@ -259,6 +261,52 @@ def rosenbrock(x, /):
     """
     x = fbench.check_vector(x, n_min=2)
     return float((100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2).sum())
+
+
+def schwefel(x, /):
+    """Schwefel function.
+
+    A function :math:`f\\colon \\mathbb{R}^{n} \\rightarrow \\mathbb{R}`
+    that takes an :math:`n`-vector as input and returns a scalar value.
+
+    .. math::
+
+        f(\\mathbf{x}) =
+        418.9829 n - \\sum_{i=1}^{n} x_{i} \\sin\\left( \\sqrt{|x_{i}|} \\right)
+
+    Parameters
+    ----------
+    x : array_like
+        The :math:`n`-vector.
+
+    Returns
+    -------
+    float
+        Function value at :math:`\\mathbf{x}`.
+
+    References
+    ----------
+    .. [1] "Schwefel function", Virtual Library of Simulation Experiments:
+           Test Functions and Datasets, `<https://www.sfu.ca/~ssurjano/schwef.html>`_
+
+    Examples
+    --------
+    >>> import fbench
+    >>> round(fbench.schwefel([420.9687]), 4)
+    0.0
+
+    >>> round(fbench.schwefel([0, 0]), 4)
+    837.9658
+
+    >>> round(fbench.schwefel([1, 2]), 4)
+    835.1488
+
+    >>> round(fbench.schwefel([1, 2, 3]), 4)
+    1251.1706
+    """
+    x = fbench.check_vector(x)
+    n = len(x)
+    return float(418.9829 * n - sum(x * np.sin(np.sqrt(np.abs(x)))))
 
 
 def sinc(x, /):

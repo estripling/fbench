@@ -74,6 +74,25 @@ def test_rosenbrock(x, expected):
 @pytest.mark.parametrize(
     "x, expected",
     [
+        ([0], 418.9829),
+        ([1], 418.1414),
+        ([0, 0], 837.9658),
+        ([1, 1], 836.2829),
+        ([1, 2], 835.1488),
+        ([1, 2, 3], 1251.1706),
+        ([420.9687], 0),
+        ([420.9687, 420.9687], 0),
+        ([420.9687, 420.9687, 420.9687], 0),
+    ],
+)
+def test_schwefel(x, expected):
+    actual = fbench.schwefel(x)
+    assert round(actual, 4) == expected
+
+
+@pytest.mark.parametrize(
+    "x, expected",
+    [
         ([0], 1.0),
         ([1], 0.8415),
     ],
