@@ -2,6 +2,19 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.0 (2023-05-18)
+### Feature
+* Add more benchmark functions ([#13](https://github.com/estripling/fbench/issues/13)) ([`12406bc`](https://github.com/estripling/fbench/commit/12406bc5c57681e1418ad2a9edf27fc8877ae530))
+* Add function optima ([#10](https://github.com/estripling/fbench/issues/10)) ([`cd859ad`](https://github.com/estripling/fbench/commit/cd859ad6e58f7997022de7c928346520556d12ef))
+* Add function plotter ([#9](https://github.com/estripling/fbench/issues/9)) ([`4c4aa5e`](https://github.com/estripling/fbench/commit/4c4aa5ee6267c4d2cc4945aa583e0b08140a4aa0))
+
+### Breaking
+* Rename functions ([`cd859ad`](https://github.com/estripling/fbench/commit/cd859ad6e58f7997022de7c928346520556d12ef))
+* New function signature for check_vector and rename visualization module to viz ([`4c4aa5e`](https://github.com/estripling/fbench/commit/4c4aa5ee6267c4d2cc4945aa583e0b08140a4aa0))
+
+### Documentation
+* **README.md:** Add FunctionPlotter example ([#12](https://github.com/estripling/fbench/issues/12)) ([`32128c4`](https://github.com/estripling/fbench/commit/32128c4f29b392ab79825664365cfb63c8d26abf))
+
 ## v0.3.0 (2023-04-30)
 ### Feature
 * Add function configurations ([#8](https://github.com/estripling/fbench/issues/8)) ([`4610d34`](https://github.com/estripling/fbench/commit/4610d346573270fed232c801a276ce0a3d0cb201))
