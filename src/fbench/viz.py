@@ -680,6 +680,7 @@ def get_2d_plotter():
         "Rosenbrock_2D_log1p": FunctionPlotter(
             func=toolz.compose_left(fbench.rosenbrock, np.log1p),
             bounds=((-2, 2), (-2, 2)),
+            optima=[fbench.structure.Optimum(fbench.check_vector([1] * 2), 0)],
         ),
         "Sphere_2D": FunctionPlotter(
             func=fbench.sphere,
