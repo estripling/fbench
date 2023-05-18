@@ -9,6 +9,7 @@ __all__ = (
     "peaks",
     "rastrigin",
     "rosenbrock",
+    "sinc",
     "sphere",
 )
 
@@ -112,6 +113,16 @@ def get_optima(n, /, func):
         ],
         rastrigin: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
         rosenbrock: [fbench.structure.Optimum(fbench.check_vector([1] * n), 0)],
+        sinc: [
+            fbench.structure.Optimum(
+                fbench.check_vector([-4.493409471849579]),
+                -0.217233628211222,
+            ),
+            fbench.structure.Optimum(
+                fbench.check_vector([4.493409471849579]),
+                -0.217233628211222,
+            ),
+        ],
         sphere: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
     }
     return optima.get(func, None)
@@ -248,6 +259,48 @@ def rosenbrock(x, /):
     """
     x = fbench.check_vector(x, n_min=2)
     return float((100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2).sum())
+
+
+def sinc(x, /):
+    """Sinc function.
+
+    A function :math:`f\\colon \\mathbb{R}^{1} \\rightarrow \\mathbb{R}`
+    that takes an :math:`1`-vector as input and returns a scalar value.
+
+    .. math::
+
+        f(\\mathbf{x}) =
+        \\begin{cases}
+            \\frac{\\sin(x)}{x} & \\text{ if } x \\neq 0 \\\\
+            1 & \\text{ if } x = 0
+        \\end{cases}
+
+    Parameters
+    ----------
+    x : array_like
+        The :math:`1`-vector.
+
+    Returns
+    -------
+    float
+        Function value at :math:`\\mathbf{x}`.
+
+    References
+    ----------
+    .. [1] "Sinc Function", Wolfram MathWorld,
+           `<https://mathworld.wolfram.com/SincFunction.html>`_
+
+    Examples
+    --------
+    >>> import fbench
+    >>> fbench.sinc([0])
+    1.0
+
+    >>> round(fbench.sinc([1]), 4)
+    0.8415
+    """
+    x = fbench.check_vector(x, n_max=1)[0]
+    return float(1 if x == 0 else np.sin(x) / x)
 
 
 def sphere(x, /):

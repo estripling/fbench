@@ -672,6 +672,11 @@ def get_1d_plotter():
             bounds=((-5, 5),),
             n_grid_points=1001,
         ),
+        "Sinc": FunctionPlotter(
+            func=fbench.sinc,
+            bounds=((-100, 100),),
+            n_grid_points=1001,
+        ),
     }
 
 

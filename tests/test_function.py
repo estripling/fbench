@@ -74,6 +74,18 @@ def test_rosenbrock(x, expected):
 @pytest.mark.parametrize(
     "x, expected",
     [
+        ([0], 1.0),
+        ([1], 0.8415),
+    ],
+)
+def test_sinc(x, expected):
+    actual = fbench.sinc(x)
+    assert round(actual, 4) == expected
+
+
+@pytest.mark.parametrize(
+    "x, expected",
+    [
         ([0], 0),
         ([0, 0], 0),
         ([1, 1], 2),
