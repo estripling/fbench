@@ -657,9 +657,24 @@ def get_1d_plotter():
             bounds=((-5, 5),),
             n_grid_points=1001,
         ),
+        "Peaks_x2=0": FunctionPlotter(
+            func=lambda x: fbench.peaks([x[0], 0]),
+            bounds=((-5, 5),),
+            n_grid_points=1001,
+            optima=[
+                fbench.structure.Optimum(
+                    fbench.check_vector([-1.38744014]), -2.8605256281989595
+                )
+            ],
+        ),
         "Rastrigin_1D": FunctionPlotter(
             func=fbench.rastrigin,
             bounds=((-5, 5),),
+            n_grid_points=1001,
+        ),
+        "Sinc": FunctionPlotter(
+            func=fbench.sinc,
+            bounds=((-100, 100),),
             n_grid_points=1001,
         ),
     }
@@ -678,6 +693,19 @@ def get_2d_plotter():
             func=fbench.ackley,
             bounds=((-5, 5), (-5, 5)),
         ),
+        "Beale_2D": FunctionPlotter(
+            func=fbench.beale,
+            bounds=((-4.5, 4.5), (-4.5, 4.5)),
+        ),
+        "Beale_2D_log1p": FunctionPlotter(
+            func=toolz.compose_left(fbench.beale, np.log1p),
+            bounds=((-4.5, 4.5), (-4.5, 4.5)),
+            optima=[fbench.structure.Optimum(fbench.check_vector([3, 0.5]), 0)],
+        ),
+        "Peaks": FunctionPlotter(
+            func=fbench.peaks,
+            bounds=((-4, 4), (-4, 4)),
+        ),
         "Rastrigin_2D": FunctionPlotter(
             func=fbench.rastrigin,
             bounds=((-5.12, 5.12), (-5.12, 5.12)),
@@ -690,6 +718,10 @@ def get_2d_plotter():
             func=toolz.compose_left(fbench.rosenbrock, np.log1p),
             bounds=((-2, 2), (-2, 2)),
             optima=[fbench.structure.Optimum(fbench.check_vector([1] * 2), 0)],
+        ),
+        "Schwefel_2D": FunctionPlotter(
+            func=fbench.schwefel,
+            bounds=((-500, 500), (-500, 500)),
         ),
         "Sphere_2D": FunctionPlotter(
             func=fbench.sphere,

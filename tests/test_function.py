@@ -22,6 +22,33 @@ def test_ackley(x, expected):
 @pytest.mark.parametrize(
     "x, expected",
     [
+        ([0, 0], 0.9810),
+        ([1, 1], 2.4338),
+        ([2, 2], 0.1328),
+    ],
+)
+def test_peaks(x, expected):
+    actual = fbench.peaks(x)
+    assert round(actual, 4) == expected
+
+
+@pytest.mark.parametrize(
+    "x, expected",
+    [
+        ([3, 0.5], 0.0),
+        ([0, 0], 14.2031),
+        ([1, 1], 14.2031),
+        ([2, 2], 356.7031),
+    ],
+)
+def test_beale(x, expected):
+    actual = fbench.beale(x)
+    assert round(actual, 4) == expected
+
+
+@pytest.mark.parametrize(
+    "x, expected",
+    [
         ([0], 0.0),
         ([0, 0], 0.0),
         ([1, 1], 2.0),
@@ -56,6 +83,37 @@ def test_rastrigin(x, expected):
 def test_rosenbrock(x, expected):
     actual = fbench.rosenbrock(x)
     assert round(actual, 2) == expected
+
+
+@pytest.mark.parametrize(
+    "x, expected",
+    [
+        ([0], 418.9829),
+        ([1], 418.1414),
+        ([0, 0], 837.9658),
+        ([1, 1], 836.2829),
+        ([1, 2], 835.1488),
+        ([1, 2, 3], 1251.1706),
+        ([420.9687], 0),
+        ([420.9687, 420.9687], 0),
+        ([420.9687, 420.9687, 420.9687], 0),
+    ],
+)
+def test_schwefel(x, expected):
+    actual = fbench.schwefel(x)
+    assert round(actual, 4) == expected
+
+
+@pytest.mark.parametrize(
+    "x, expected",
+    [
+        ([0], 1.0),
+        ([1], 0.8415),
+    ],
+)
+def test_sinc(x, expected):
+    actual = fbench.sinc(x)
+    assert round(actual, 4) == expected
 
 
 @pytest.mark.parametrize(

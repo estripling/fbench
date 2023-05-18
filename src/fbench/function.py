@@ -5,9 +5,13 @@ import fbench
 
 __all__ = (
     "ackley",
+    "beale",
     "get_optima",
+    "peaks",
     "rastrigin",
     "rosenbrock",
+    "schwefel",
+    "sinc",
     "sphere",
 )
 
@@ -64,6 +68,58 @@ def ackley(x, /):
     )
 
 
+def beale(x, /):
+    """Beale function.
+
+    A function :math:`f\\colon \\mathbb{R}^{2} \\rightarrow \\mathbb{R}`
+    that takes an :math:`2`-vector as input and returns a scalar value.
+
+    .. math::
+
+       f(\\mathbf{x}) =
+       \\left( 1.5 - x_{1} + x_{1} x_{2} \\right)^{2}
+       + \\left( 2.25 - x_{1} + x_{1} x_{2}^{2} \\right)^{2}
+       + \\left( 2.625 - x_{1} + x_{1} x_{2}^{3}\\right)^{2}
+
+    Parameters
+    ----------
+    x : array_like
+        The :math:`2`-vector.
+
+    Returns
+    -------
+    float
+        Function value at :math:`\\mathbf{x}`.
+
+    References
+    ----------
+    .. [1] "Test functions for optimization", Wikipedia,
+           `<https://en.wikipedia.org/wiki/Test_functions_for_optimization>`_
+    .. [2] "Beale function", Virtual Library of Simulation Experiments:
+           Test Functions and Datasets, `<https://www.sfu.ca/~ssurjano/beale.html>`_
+
+    Examples
+    --------
+    >>> import fbench
+    >>> fbench.beale([3, 0.5])
+    0.0
+
+    >>> round(fbench.beale([0, 0]), 4)
+    14.2031
+
+    >>> round(fbench.beale([1, 1]), 4)
+    14.2031
+
+    >>> round(fbench.beale([2, 2]), 4)
+    356.7031
+    """
+    x1, x2 = fbench.check_vector(x, n_max=2)
+    f1 = (1.5 - x1 + x1 * x2) ** 2
+    f2 = (2.25 - x1 + x1 * x2**2) ** 2
+    f3 = (2.625 - x1 + x1 * x2**3) ** 2
+    return float(f1 + f2 + f3)
+
+
 @toolz.curry
 def get_optima(n, /, func):
     """Retrieve optima for defined functions.
@@ -86,6 +142,7 @@ def get_optima(n, /, func):
     - Function is curried.
     - Optima are defined for the following functions:
         - ackley
+        - peaks
         - rastrigin
         - rosenbrock
         - sphere
@@ -102,11 +159,67 @@ def get_optima(n, /, func):
     """
     optima = {
         ackley: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
+        beale: [fbench.structure.Optimum(fbench.check_vector([3, 0.5]), 0)],
+        peaks: [
+            fbench.structure.Optimum(
+                fbench.check_vector([0.228279999979237, -1.625531071954464]),
+                -6.551133332622496,
+            )
+        ],
         rastrigin: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
         rosenbrock: [fbench.structure.Optimum(fbench.check_vector([1] * n), 0)],
+        schwefel: [fbench.structure.Optimum(fbench.check_vector([420.9687] * n), 0)],
+        sinc: [
+            fbench.structure.Optimum(
+                fbench.check_vector([-4.493409471849579]),
+                -0.217233628211222,
+            ),
+            fbench.structure.Optimum(
+                fbench.check_vector([4.493409471849579]),
+                -0.217233628211222,
+            ),
+        ],
         sphere: [fbench.structure.Optimum(fbench.check_vector([0] * n), 0)],
     }
     return optima.get(func, None)
+
+
+def peaks(x, /):
+    """Peaks function.
+
+    A function :math:`f\\colon \\mathbb{R}^{2} \\rightarrow \\mathbb{R}`
+    that takes an :math:`2`-vector as input and returns a scalar value.
+
+    .. math::
+
+       f(\\mathbf{x}) =
+       3 (1 - x_{1})^{2}
+         \\exp\\left( - x_{1}^{2} - (x_{2} + 1)^{2} \\right)
+       - 10 \\left( \\frac{x_{1}}{5} - x_{1}^{3} - x_{2}^{5} \\right)
+         \\exp\\left( - x_{1}^{2} - x_{2}^{2} \\right)
+       - \\frac{1}{3} \\exp\\left( - (x_{1} + 1)^{2} - x_{2}^{2} \\right)
+
+    Parameters
+    ----------
+    x : array_like
+        The :math:`2`-vector.
+
+    Returns
+    -------
+    float
+        Function value at :math:`\\mathbf{x}`.
+
+    Examples
+    --------
+    >>> import fbench
+    >>> round(fbench.peaks([0, 0]), 4)
+    0.981
+    """
+    x1, x2 = fbench.check_vector(x, n_max=2)
+    f1 = 3 * (1 - x1) ** 2 * np.exp(-(x1**2) - (x2 + 1) ** 2)
+    f2 = 10 * (x1 / 5 - x1**3 - x2**5) * np.exp(-(x1**2) - x2**2)
+    f3 = 1 / 3 * np.exp(-((x1 + 1) ** 2) - x2**2)
+    return float(f1 - f2 - f3)
 
 
 def rastrigin(x, /):
@@ -202,6 +315,94 @@ def rosenbrock(x, /):
     """
     x = fbench.check_vector(x, n_min=2)
     return float((100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2).sum())
+
+
+def schwefel(x, /):
+    """Schwefel function.
+
+    A function :math:`f\\colon \\mathbb{R}^{n} \\rightarrow \\mathbb{R}`
+    that takes an :math:`n`-vector as input and returns a scalar value.
+
+    .. math::
+
+        f(\\mathbf{x}) =
+        418.9829 n - \\sum_{i=1}^{n} x_{i} \\sin\\left( \\sqrt{|x_{i}|} \\right)
+
+    Parameters
+    ----------
+    x : array_like
+        The :math:`n`-vector.
+
+    Returns
+    -------
+    float
+        Function value at :math:`\\mathbf{x}`.
+
+    References
+    ----------
+    .. [1] "Schwefel function", Virtual Library of Simulation Experiments:
+           Test Functions and Datasets, `<https://www.sfu.ca/~ssurjano/schwef.html>`_
+
+    Examples
+    --------
+    >>> import fbench
+    >>> round(fbench.schwefel([420.9687]), 4)
+    0.0
+
+    >>> round(fbench.schwefel([0, 0]), 4)
+    837.9658
+
+    >>> round(fbench.schwefel([1, 2]), 4)
+    835.1488
+
+    >>> round(fbench.schwefel([1, 2, 3]), 4)
+    1251.1706
+    """
+    x = fbench.check_vector(x)
+    n = len(x)
+    return float(418.9829 * n - sum(x * np.sin(np.sqrt(np.abs(x)))))
+
+
+def sinc(x, /):
+    """Sinc function.
+
+    A function :math:`f\\colon \\mathbb{R}^{1} \\rightarrow \\mathbb{R}`
+    that takes an :math:`1`-vector as input and returns a scalar value.
+
+    .. math::
+
+        f(\\mathbf{x}) =
+        \\begin{cases}
+            \\frac{\\sin(x)}{x} & \\text{ if } x \\neq 0 \\\\
+            1 & \\text{ if } x = 0
+        \\end{cases}
+
+    Parameters
+    ----------
+    x : array_like
+        The :math:`1`-vector.
+
+    Returns
+    -------
+    float
+        Function value at :math:`\\mathbf{x}`.
+
+    References
+    ----------
+    .. [1] "Sinc Function", Wolfram MathWorld,
+           `<https://mathworld.wolfram.com/SincFunction.html>`_
+
+    Examples
+    --------
+    >>> import fbench
+    >>> fbench.sinc([0])
+    1.0
+
+    >>> round(fbench.sinc([1]), 4)
+    0.8415
+    """
+    x = fbench.check_vector(x, n_max=1)[0]
+    return float(1 if x == 0 else np.sin(x) / x)
 
 
 def sphere(x, /):
