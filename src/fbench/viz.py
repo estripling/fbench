@@ -657,6 +657,16 @@ def get_1d_plotter():
             bounds=((-5, 5),),
             n_grid_points=1001,
         ),
+        "Peaks_x2=0": FunctionPlotter(
+            func=lambda x: fbench.peaks([x[0], 0]),
+            bounds=((-5, 5),),
+            n_grid_points=1001,
+            optima=[
+                fbench.structure.Optimum(
+                    fbench.check_vector([-1.38744014]), -2.8605256281989595
+                )
+            ],
+        ),
         "Rastrigin_1D": FunctionPlotter(
             func=fbench.rastrigin,
             bounds=((-5, 5),),
