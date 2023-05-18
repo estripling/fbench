@@ -35,6 +35,18 @@ The [`ackley`](https://fbench.readthedocs.io/en/stable/autoapi/fbench/index.html
 3.6254
 ```
 
+Visualize function with [`FunctionPlotter`](https://fbench.readthedocs.io/en/stable/autoapi/fbench/viz/index.html#fbench.viz.FunctionPlotter):
+
+```python
+>>> import matplotlib.pyplot as plt
+>>> plotter = fbench.viz.FunctionPlotter(func=fbench.ackley, bounds=[(-5, 5)] * 2)
+>>> plotter.plot()
+>>> plt.show()
+```
+<p align="left">
+<img src="https://raw.githubusercontent.com/estripling/fbench/main/images/readme-ackley.png" width="800" alt="Ackley function.">
+</p>
+
 ## Contributing to fBench
 
 Your contribution is greatly appreciated!
