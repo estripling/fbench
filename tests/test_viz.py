@@ -91,7 +91,7 @@ class TestFunctionPlotter:
         "get_kws_contourf__base",
         "get_kws_contourf__YlOrBr",
         "get_kws_contourf__YlOrBr_r",
-        "get_kws_line__base",
+        "get_kws_plot__base",
         "get_kws_scatter__base",
         "get_kws_surface__base",
         "get_kws_surface__YlOrBr",

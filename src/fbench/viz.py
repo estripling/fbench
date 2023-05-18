@@ -70,7 +70,7 @@ class VizConfig(Enum):
         return output
 
     @classmethod
-    def get_kws_line__base(cls):
+    def get_kws_plot__base(cls):
         """Returns kwargs for ``.plot()``: base configuration."""
         return dict(
             linewidth=2,
@@ -159,9 +159,9 @@ class FunctionPlotter:
         The kwargs are passed to ``matplotlib.axes.Axes.contour``.
         By default, using configuration: ``VizConfig.get_kws_contour__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
-    kws_line : dict of keyword arguments, default=None
+    kws_plot : dict of keyword arguments, default=None
         The kwargs are passed to ``matplotlib.axes.Axes.plot``.
-        By default, using configuration: ``VizConfig.get_kws_line__base()``.
+        By default, using configuration: ``VizConfig.get_kws_plot__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
     kws_scatter : dict of keyword arguments, default=None
         The kwargs are passed to ``matplotlib.axes.Axes.scatter`` or
@@ -199,7 +199,7 @@ class FunctionPlotter:
         kws_surface=None,
         kws_contourf=None,
         kws_contour=None,
-        kws_line=None,
+        kws_plot=None,
         kws_scatter=None,
     ):
         self._func = func
@@ -214,7 +214,7 @@ class FunctionPlotter:
         self._kws_contourf = kws_contourf
         self._kws_contour = kws_contour
         self._kws_surface = kws_surface
-        self._kws_line = kws_line
+        self._kws_plot = kws_plot
         self._kws_scatter = kws_scatter
 
         self._size = len(bounds)
@@ -345,7 +345,7 @@ class FunctionPlotter:
         ax = ax or fig.add_subplot(1, 1, 1)
         ax = create_line_plot(
             self._coord,
-            kws_line=self._kws_line,
+            kws_plot=self._kws_plot,
             ax=ax,
         )
 
@@ -547,16 +547,16 @@ def create_discrete_cmap(n, /, *, name="viridis_r", lower_bound=0.05, upper_boun
 
 
 @toolz.curry
-def create_line_plot(coord, /, *, kws_line=None, ax=None):
+def create_line_plot(coord, /, *, kws_plot=None, ax=None):
     """Create a line plot from (x, y) pairs.
 
     Parameters
     ----------
     coord : CoordinatePairs
         The (x, y) coordinate pairs.
-    kws_line : dict of keyword arguments, default=None
+    kws_plot : dict of keyword arguments, default=None
         The kwargs are passed to ``matplotlib.axes.Axes.plot``.
-        By default, using configuration: ``VizConfig.get_kws_line__base()``.
+        By default, using configuration: ``VizConfig.get_kws_plot__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
     ax : matplotlib.axes.Axes, default=None
         Optionally supply an ``Axes`` object.
@@ -575,9 +575,9 @@ def create_line_plot(coord, /, *, kws_line=None, ax=None):
     """  # noqa: E501
     ax = ax or plt.gca()
 
-    settings_line = VizConfig.get_kws_line__base()
-    settings_line.update(kws_line or dict())
-    ax.plot(coord.x, coord.y, **settings_line)
+    settings_plot = VizConfig.get_kws_plot__base()
+    settings_plot.update(kws_plot or dict())
+    ax.plot(coord.x, coord.y, **settings_plot)
 
     return ax
 
