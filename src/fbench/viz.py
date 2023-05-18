@@ -27,7 +27,7 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_contour__base(cls):
-        """Returns kwargs for ``contour``: base configuration."""
+        """Returns kwargs for ``.contour()``: base configuration."""
         return dict(
             levels=12,
             colors="dimgray",
@@ -39,7 +39,7 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_contourf__base(cls):
-        """Returns kwargs for ``contourf``: base configuration."""
+        """Returns kwargs for ``.contourf()``: base configuration."""
         return dict(
             levels=100,
             antialiased=True,
@@ -49,7 +49,9 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_contourf__YlOrBr(cls):
-        """Returns kwargs for ``contourf``: YlOrBr configuration for dark max."""
+        """Returns kwargs for ``.contourf()``:
+        ``YlOrBr`` configuration for dark max.
+        """
         output = dict(
             cmap=plt.get_cmap("YlOrBr"),
         )
@@ -58,7 +60,9 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_contourf__YlOrBr_r(cls):
-        """Returns kwargs for ``contourf``: YlOrBr_r configuration for dark min."""
+        """Returns kwargs for ``.contourf()``:
+        ``YlOrBr_r`` configuration for dark min.
+        """
         output = dict(
             cmap=plt.get_cmap("YlOrBr_r"),
         )
@@ -67,7 +71,7 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_line__base(cls):
-        """Returns kwargs for ``line``: base configuration."""
+        """Returns kwargs for ``.plot()``: base configuration."""
         return dict(
             linewidth=2,
             zorder=0,
@@ -84,7 +88,7 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_surface__base(cls):
-        """Returns kwargs for ``plot_surface``: base configuration."""
+        """Returns kwargs for ``.plot_surface()``: base configuration."""
         return dict(
             rstride=1,
             cstride=1,
@@ -97,7 +101,9 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_surface__YlOrBr(cls):
-        """Returns kwargs for ``plot_surface``: YlOrBr configuration for dark max."""
+        """Returns kwargs for ``.plot_surface()``:
+        ``YlOrBr`` configuration for dark max.
+        """
         output = dict(
             cmap=plt.get_cmap("YlOrBr"),
         )
@@ -106,7 +112,9 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_surface__YlOrBr_r(cls):
-        """Returns kwargs for ``plot_surface``: YlOrBr_r configuration for dark min."""
+        """Returns kwargs for ``.plot_surface()``:
+        ``YlOrBr_r`` configuration for dark min.
+        """
         output = dict(
             cmap=plt.get_cmap("YlOrBr_r"),
         )
