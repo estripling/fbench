@@ -90,8 +90,8 @@ class VizConfig(Enum):
     def get_kws_surface__base(cls):
         """Returns kwargs for ``.plot_surface()``: base configuration."""
         return dict(
-            rstride=1,
-            cstride=1,
+            rstride=2,
+            cstride=2,
             edgecolors="dimgray",
             antialiased=True,
             linewidth=0.1,
