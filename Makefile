@@ -45,6 +45,11 @@ clean:
 create-docs:
 	cd docs; make html; cd ..;
 
+##  - generate-readme-image                :: generate image for README.md
+generate-readme-image:
+	$(PYTHON) scripts/generate_readme_image.py
+	@echo "\n"
+
 ##  - remove-docs                          :: remove local documentation files
 remove-docs:
 	@rm -rf docs/_build/
