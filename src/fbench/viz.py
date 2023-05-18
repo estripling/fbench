@@ -18,6 +18,7 @@ __all__ = (
     "create_discrete_cmap",
     "get_1d_plotter",
     "get_2d_plotter",
+    "plot_optima",
 )
 
 
@@ -26,7 +27,7 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_contour__base(cls):
-        """Returns kwargs for ``contour``: base configuration."""
+        """Returns kwargs for ``.contour()``: base configuration."""
         return dict(
             levels=12,
             colors="dimgray",
@@ -38,7 +39,7 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_contourf__base(cls):
-        """Returns kwargs for ``contourf``: base configuration."""
+        """Returns kwargs for ``.contourf()``: base configuration."""
         return dict(
             levels=100,
             antialiased=True,
@@ -48,7 +49,9 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_contourf__YlOrBr(cls):
-        """Returns kwargs for ``contourf``: YlOrBr configuration for dark max."""
+        """Returns kwargs for ``.contourf()``:
+        ``YlOrBr`` configuration for dark max.
+        """
         output = dict(
             cmap=plt.get_cmap("YlOrBr"),
         )
@@ -57,7 +60,9 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_contourf__YlOrBr_r(cls):
-        """Returns kwargs for ``contourf``: YlOrBr_r configuration for dark min."""
+        """Returns kwargs for ``.contourf()``:
+        ``YlOrBr_r`` configuration for dark min.
+        """
         output = dict(
             cmap=plt.get_cmap("YlOrBr_r"),
         )
@@ -65,19 +70,28 @@ class VizConfig(Enum):
         return output
 
     @classmethod
-    def get_kws_line__base(cls):
-        """Returns kwargs for ``line``: base configuration."""
+    def get_kws_plot__base(cls):
+        """Returns kwargs for ``.plot()``: base configuration."""
         return dict(
             linewidth=2,
             zorder=0,
         )
 
     @classmethod
-    def get_kws_surface__base(cls):
-        """Returns kwargs for ``plot_surface``: base configuration."""
+    def get_kws_scatter__base(cls):
+        """Returns kwargs for ``.scatter()``: base configuration."""
         return dict(
-            rstride=1,
-            cstride=1,
+            s=60,
+            c="black",
+            zorder=2,
+        )
+
+    @classmethod
+    def get_kws_surface__base(cls):
+        """Returns kwargs for ``.plot_surface()``: base configuration."""
+        return dict(
+            rstride=2,
+            cstride=2,
             edgecolors="dimgray",
             antialiased=True,
             linewidth=0.1,
@@ -87,7 +101,9 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_surface__YlOrBr(cls):
-        """Returns kwargs for ``plot_surface``: YlOrBr configuration for dark max."""
+        """Returns kwargs for ``.plot_surface()``:
+        ``YlOrBr`` configuration for dark max.
+        """
         output = dict(
             cmap=plt.get_cmap("YlOrBr"),
         )
@@ -96,7 +112,9 @@ class VizConfig(Enum):
 
     @classmethod
     def get_kws_surface__YlOrBr_r(cls):
-        """Returns kwargs for ``plot_surface``: YlOrBr_r configuration for dark min."""
+        """Returns kwargs for ``.plot_surface()``:
+        ``YlOrBr_r`` configuration for dark min.
+        """
         output = dict(
             cmap=plt.get_cmap("YlOrBr_r"),
         )
@@ -117,6 +135,8 @@ class FunctionPlotter:
         Specify if the function surface plot should be generated.
     with_contour : bool, default=True
         Specify if the contour plot should be generated.
+    with_optima : bool, default=True
+        Specify if scatter points for the optima should be added.
     n_grid_points : int, default=101
         Specify the number of grid points on one axis.
         Ignored if ``x_coord`` or ``y_coord`` is specified.
@@ -124,6 +144,9 @@ class FunctionPlotter:
         Specify coordinates on the x-axis.
     x_coord : sequence, default=None
         Specify coordinates on the y-axis.
+    optima : sequence[Optimum], default=None
+        Specify optima to plot. If None, retrieve them from :func:`get_optima`.
+        Note that optima are only added to the plot if a defintion exists.
     kws_surface : dict of keyword arguments, default=None
         The kwargs are passed to ``mpl_toolkits.mplot3d.axes3d.Axes3D.plot_surface``.
         By default, using configuration: ``VizConfig.get_kws_surface__YlOrBr_r()``.
@@ -136,16 +159,24 @@ class FunctionPlotter:
         The kwargs are passed to ``matplotlib.axes.Axes.contour``.
         By default, using configuration: ``VizConfig.get_kws_contour__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
-    kws_line : dict of keyword arguments, default=None
+    kws_plot : dict of keyword arguments, default=None
         The kwargs are passed to ``matplotlib.axes.Axes.plot``.
-        By default, using configuration: ``VizConfig.get_kws_line__base()``.
+        By default, using configuration: ``VizConfig.get_kws_plot__base()``.
+        Optionally specify a dict of keyword arguments to update configurations.
+    kws_scatter : dict of keyword arguments, default=None
+        The kwargs are passed to ``matplotlib.axes.Axes.scatter`` or
+        ``mpl_toolkits.mplot3d.axes3d.Axes3D.scatter``.
+        By default, using configuration: ``VizConfig.get_kws_scatter__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
 
     Notes
     -----
-    - Function is curried.
     - Examples are shown in the
       `Overview of fBench functions <https://fbench.readthedocs.io/en/stable/fBench-functions.html>`_.
+
+    See Also
+    --------
+    fbench.get_optima : Retrieve optima for defined functions.
 
     Examples
     --------
@@ -160,25 +191,31 @@ class FunctionPlotter:
         bounds,
         with_surface=True,
         with_contour=True,
+        with_optima=True,
         n_grid_points=101,
         x_coord=None,
         y_coord=None,
+        optima=None,
         kws_surface=None,
         kws_contourf=None,
         kws_contour=None,
-        kws_line=None,
+        kws_plot=None,
+        kws_scatter=None,
     ):
         self._func = func
         self._bounds = bounds
         self._with_surface = with_surface
         self._with_contour = with_contour
+        self._with_optima = with_optima
         self._n_grid_points = n_grid_points
         self._x_coord = x_coord
         self._y_coord = y_coord
+        self._optima = optima
         self._kws_contourf = kws_contourf
         self._kws_contour = kws_contour
         self._kws_surface = kws_surface
-        self._kws_line = kws_line
+        self._kws_plot = kws_plot
+        self._kws_scatter = kws_scatter
 
         self._size = len(bounds)
         self._coord = None
@@ -203,7 +240,35 @@ class FunctionPlotter:
         return self._bounds
 
     def plot(self, fig=None, ax=None, ax3d=None):
-        """Generate the plot."""
+        """Generate the plot.
+
+        Parameters
+        ----------
+        fig : matplotlib.figure.Figure, default=None
+            Optionally supply a ``Figure`` object.
+            If None, the current ``Figure`` object is retrieved.
+        ax : matplotlib.axes.Axes, default=None
+            Optionally supply an ``Axes`` object.
+            If None, the current ``Axes`` object is retrieved.
+        ax3d : mpl_toolkits.mplot3d.axes3d.Axes3D, default=None
+            Optionally supply an ``Axes3D`` object.
+            If None, the current ``Axes3D`` object is retrieved.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The ``Figure`` object.
+        ax : matplotlib.axes.Axes
+            The ``Axes`` object.
+        ax3d : mpl_toolkits.mplot3d.axes3d.Axes3D
+            The ``Axes3D`` object of the surface.
+
+        Notes
+        -----
+        When creating both a surface and contour plot and either
+        ``ax`` or ``ax3d`` is specified, it is best to also supply ``fig``.
+        To this end, it might be easier to only supply a ``fig`` object.
+        """
         self._set_coord_attr()
 
         if self._size == 1:
@@ -218,6 +283,9 @@ class FunctionPlotter:
 
             if not self._with_surface and self._with_contour:
                 fig, ax, ax3d = self._plot_contour(fig, ax, ax3d)
+
+        if self._with_optima:
+            ax, ax3d = self._add_optima(ax, ax3d)
 
         return fig, ax, ax3d
 
@@ -247,7 +315,12 @@ class FunctionPlotter:
         fig = fig or plt.gcf()
 
         ax3d = ax3d or fig.add_subplot(1, 1, 1, projection="3d")
-        ax3d = create_surface_plot(self._coord, ax=ax3d)
+        ax3d = create_surface_plot(
+            self._coord,
+            kws_surface=self._kws_surface,
+            kws_contourf=self._kws_contourf,
+            ax=ax3d,
+        )
 
         ax = None
 
@@ -277,11 +350,24 @@ class FunctionPlotter:
         ax = ax or fig.add_subplot(1, 1, 1)
         ax = create_line_plot(
             self._coord,
-            kws_line=self._kws_line,
+            kws_plot=self._kws_plot,
             ax=ax,
         )
 
         return fig, ax, ax3d
+
+    def _add_optima(self, ax, ax3d):
+        optima = self._optima or fbench.get_optima(self._size, self.func)
+
+        if optima is not None:
+            ax, ax3d = plot_optima(
+                optima,
+                ax=ax,
+                ax3d=ax3d,
+                kws_scatter=self._kws_scatter,
+            )
+
+        return ax, ax3d
 
     def _set_coord_attr(self):
         """Private setter for coordinate attribute."""
@@ -320,13 +406,13 @@ def create_contour_plot(coord, /, *, kws_contourf=None, kws_contour=None, ax=Non
         The kwargs are passed to ``matplotlib.axes.Axes.contour``.
         By default, using configuration: ``VizConfig.get_kws_contour__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
-    ax: matplotlib.axes.Axes, default=None
+    ax : matplotlib.axes.Axes, default=None
         Optionally supply an ``Axes`` object.
         If None, the current ``Axes`` object is retrieved.
 
     Returns
     -------
-    matplotlib.axes.Axes
+    ax : matplotlib.axes.Axes
         The ``Axes`` object with filled contours and superimposed contour lines.
 
     Notes
@@ -448,7 +534,7 @@ def create_discrete_cmap(n, /, *, name="viridis_r", lower_bound=0.05, upper_boun
 
     Returns
     -------
-    list of tuple[float, float, float, float]
+    list[tuple[float, float, float, float]]
         Discrete values from colormap.
 
     Notes
@@ -466,24 +552,24 @@ def create_discrete_cmap(n, /, *, name="viridis_r", lower_bound=0.05, upper_boun
 
 
 @toolz.curry
-def create_line_plot(coord, /, *, kws_line=None, ax=None):
+def create_line_plot(coord, /, *, kws_plot=None, ax=None):
     """Create a line plot from (x, y) pairs.
 
     Parameters
     ----------
     coord : CoordinatePairs
         The (x, y) coordinate pairs.
-    kws_line : dict of keyword arguments, default=None
+    kws_plot : dict of keyword arguments, default=None
         The kwargs are passed to ``matplotlib.axes.Axes.plot``.
-        By default, using configuration: ``VizConfig.get_kws_line__base()``.
+        By default, using configuration: ``VizConfig.get_kws_plot__base()``.
         Optionally specify a dict of keyword arguments to update configurations.
-    ax: matplotlib.axes.Axes, default=None
+    ax : matplotlib.axes.Axes, default=None
         Optionally supply an ``Axes`` object.
         If None, the current ``Axes`` object is retrieved.
 
     Returns
     -------
-    matplotlib.axes.Axes
+    ax : matplotlib.axes.Axes
         The ``Axes`` object.
 
     Notes
@@ -494,9 +580,9 @@ def create_line_plot(coord, /, *, kws_line=None, ax=None):
     """  # noqa: E501
     ax = ax or plt.gca()
 
-    settings_line = VizConfig.get_kws_line__base()
-    settings_line.update(kws_line or dict())
-    ax.plot(coord.x, coord.y, **settings_line)
+    settings_plot = VizConfig.get_kws_plot__base()
+    settings_plot.update(kws_plot or dict())
+    ax.plot(coord.x, coord.y, **settings_plot)
 
     return ax
 
@@ -517,7 +603,7 @@ def create_surface_plot(coord, /, *, kws_surface=None, kws_contourf=None, ax=Non
         The kwargs are passed to ``mpl_toolkits.mplot3d.axes3d.Axes3D.contourf``.
         By default, using configuration: ``VizConfig.get_kws_contourf__YlOrBr_r()``.
         Optionally specify a dict of keyword arguments to update configurations.
-    ax: mpl_toolkits.mplot3d.axes3d.Axes3D, default=None
+    ax : mpl_toolkits.mplot3d.axes3d.Axes3D, default=None
         Optionally supply an ``Axes3D`` object.
         If None, the current ``Axes3D`` object is retrieved.
 
@@ -547,7 +633,11 @@ def create_surface_plot(coord, /, *, kws_surface=None, kws_contourf=None, ax=Non
     settings_contourf = VizConfig.get_kws_contourf__YlOrBr_r()
     settings_contourf.update(kws_contourf or dict())
     settings_contourf["zdir"] = settings_contourf.get("zdir", "z")
-    settings_contourf["offset"] = settings_contourf.get("offset", 0) + coord.z.min()
+
+    # make contourf plot appear to be on the floor
+    ax.set_zlim3d(coord.z.min(), coord.z.max())
+    settings_contourf["offset"] = coord.z.min()
+
     ax.contourf(coord.x, coord.y, coord.z, **settings_contourf)
 
     return ax
@@ -558,7 +648,7 @@ def get_1d_plotter():
 
     Returns
     -------
-    dict of FunctionPlotter
+    dict[str, FunctionPlotter]
         Predefined FunctionPlotter instances.
     """
     return {
@@ -580,7 +670,7 @@ def get_2d_plotter():
 
     Returns
     -------
-    dict of FunctionPlotter
+    dict[str, FunctionPlotter]
         Predefined FunctionPlotter instances.
     """
     return {
@@ -599,9 +689,59 @@ def get_2d_plotter():
         "Rosenbrock_2D_log1p": FunctionPlotter(
             func=toolz.compose_left(fbench.rosenbrock, np.log1p),
             bounds=((-2, 2), (-2, 2)),
+            optima=[fbench.structure.Optimum(fbench.check_vector([1] * 2), 0)],
         ),
         "Sphere_2D": FunctionPlotter(
             func=fbench.sphere,
             bounds=((-2, 2), (-2, 2)),
         ),
     }
+
+
+def plot_optima(optima, /, *, ax=None, ax3d=None, kws_scatter=None):
+    """Add optima as scatter points to plot.
+
+    Parameters
+    ----------
+    optima : sequence of Optimum
+        The optima to plot.
+    ax : matplotlib.axes.Axes, default=None
+        Specify the ``Axes`` object if scatter points should be added to it.
+    ax3d : mpl_toolkits.mplot3d.axes3d.Axes3D, default=None
+        Specify the ``Axes3D`` object if scatter points should be added to it.
+    kws_scatter : dict of keyword arguments, default=None
+        The kwargs are passed to ``matplotlib.axes.Axes.scatter`` or
+        ``mpl_toolkits.mplot3d.axes3d.Axes3D.scatter``.
+        By default, using configuration: ``VizConfig.get_kws_scatter__base()``.
+        Optionally specify a dict of keyword arguments to update configurations.
+
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+        The ``Axes`` object.
+    ax3d : mpl_toolkits.mplot3d.axes3d.Axes3D
+        The ``Axes3D`` object of the surface.
+    """
+    n = optima[0].n
+
+    settings_scatter = VizConfig.get_kws_scatter__base()
+    settings_scatter.update(kws_scatter or dict())
+
+    if n == 1 and ax is not None:
+        # line
+        for optimum in optima:
+            ax.scatter(optimum.x, optimum.fx, **settings_scatter)
+
+    if n == 2 and ax is not None:
+        # contour
+        for optimum in optima:
+            ax.scatter(*optimum.x, **settings_scatter)
+
+    if n == 2 and ax3d is not None:
+        # surface
+        for optimum in optima:
+            zmin = ax3d.get_zlim()[0]
+            ax3d.scatter(*optimum.x, zmin, **settings_scatter)
+            ax3d.scatter(*optimum.x, optimum.fx, **settings_scatter)
+
+    return ax, ax3d

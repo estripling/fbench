@@ -76,6 +76,13 @@ class TestFunctionPlotter:
         assert isinstance(ax, matplotlib.axes.Axes)
         assert ax3d is None
 
+    def test_default_plot__ackley(self):
+        plotter = fbench.viz.FunctionPlotter(func=fbench.ackley, bounds=[(-5, 5)] * 2)
+        fig, ax, ax3d = plotter.plot()
+        assert isinstance(fig, matplotlib.figure.Figure)
+        assert isinstance(ax, matplotlib.axes.Axes)
+        assert isinstance(ax3d, mpl_toolkits.mplot3d.Axes3D)
+
 
 @pytest.mark.parametrize(
     "method_name",
@@ -84,7 +91,8 @@ class TestFunctionPlotter:
         "get_kws_contourf__base",
         "get_kws_contourf__YlOrBr",
         "get_kws_contourf__YlOrBr_r",
-        "get_kws_line__base",
+        "get_kws_plot__base",
+        "get_kws_scatter__base",
         "get_kws_surface__base",
         "get_kws_surface__YlOrBr",
         "get_kws_surface__YlOrBr_r",
@@ -176,3 +184,18 @@ def test_get_2d_plotter():
         assert isinstance(name, str)
         assert isinstance(plotter, fbench.viz.FunctionPlotter)
         assert isinstance(plotter.func, Callable)
+
+
+def test_plot_optima():
+    func = fbench.sphere
+    ax = toolz.pipe(
+        [-1, 0, 1],
+        fbench.viz.create_coordinates2d(func),
+        fbench.viz.create_line_plot(),
+    )
+
+    optima = fbench.get_optima(1, func)
+    ax, _ = fbench.viz.plot_optima(optima, ax=ax)
+
+    plt.close()
+    assert isinstance(ax, matplotlib.axes.Axes)
