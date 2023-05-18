@@ -315,7 +315,12 @@ class FunctionPlotter:
         fig = fig or plt.gcf()
 
         ax3d = ax3d or fig.add_subplot(1, 1, 1, projection="3d")
-        ax3d = create_surface_plot(self._coord, ax=ax3d)
+        ax3d = create_surface_plot(
+            self._coord,
+            kws_surface=self._kws_surface,
+            kws_contourf=self._kws_contourf,
+            ax=ax3d,
+        )
 
         ax = None
 
@@ -628,7 +633,11 @@ def create_surface_plot(coord, /, *, kws_surface=None, kws_contourf=None, ax=Non
     settings_contourf = VizConfig.get_kws_contourf__YlOrBr_r()
     settings_contourf.update(kws_contourf or dict())
     settings_contourf["zdir"] = settings_contourf.get("zdir", "z")
-    settings_contourf["offset"] = settings_contourf.get("offset", 0) + coord.z.min()
+
+    # make contourf plot appear to be on the floor
+    ax.set_zlim3d(coord.z.min(), coord.z.max())
+    settings_contourf["offset"] = coord.z.min()
+
     ax.contourf(coord.x, coord.y, coord.z, **settings_contourf)
 
     return ax
